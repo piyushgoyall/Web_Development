@@ -1,0 +1,103 @@
+<!-- Travel Website -->
+
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Travel Website</title>
+	<link rel="stylesheet" type="text/css" href="style.css">
+</head>
+
+<body>
+	<header>
+		<nav>
+			<ul>
+				<li><a href="#home">Home</a></li>
+				<li><a href="#gallery">Gallery</a></li>
+				<li><a href="#about">About Us</a></li>
+				<li><a href="#booking">Make a Booking</a></li>
+			</ul>
+		</nav>
+	</header>
+	<section id="home">
+		<h1>Welcome to Rajasthan</h1>
+		<h3>Experience the beauty of Rajasthan with us.</h3>
+	</section>
+
+	<section id="about">
+		<h2>About Us</h2>
+		<p>We are <span style="font-weight: bold;">TravelX</span>, a travel company that specializes in creating
+			personalized and memorable experiences for
+			our customers. Whether you want to explore the majestic Himalayas, relax on the serene beaches of Goa, or
+			immerse yourself in the rich culture of Rajasthan, we have the perfect package for you.
+			We have a team of passionate and professional travel experts who will take care of every detail of your
+			trip, from booking flights and hotels, to arranging local guides and activities. We also offer flexible and
+			customizable options, so you can tailor your itinerary to suit your preferences and budget.
+			At TravelX, we believe that travel is more than just a destination. It is a journey of discovery, learning,
+			and growth. That is why we strive to provide you with the best service, quality, and value, so you can enjoy
+			every moment of your adventure.
+			Contact us today and let us help you plan your dream vacation. We are TravelX, and we are here to make your
+			travel dreams come true.</p>
+		<h3>Contact Details</h3>
+		<p>Phone: 123-456-7890<br>Email: info@rajasthantravel.com</p>
+	</section>
+
+
+	<section id="gallery">
+		<h1>Gallery</h1>
+		<div class="gallery">
+			<img
+				src="https://media.istockphoto.com/id/1224021113/photo/indian-cameleers-camel-driver-with-camel-silhouettes-in-dunes-on-sunset-jaisalmer-rajasthan.jpg?s=612x612&w=0&k=20&c=MeF2Dl4ya1NVOWM_I_xo3EPd8E-iazBghYhjiyRaTcU=">
+			<img src="https://t4.ftcdn.net/jpg/01/89/57/23/360_F_189572353_ZMYXpEB7iRZN7Myn61lLz3OQ5bwE3B0S.jpg">
+			<img
+				src="https://media.istockphoto.com/id/805563154/photo/mehrangharh-fort-and-jaswant-thada-mausoleum-in-jodhpur-rajasthan-india.jpg?s=612x612&w=0&k=20&c=5r9UxPkz9mIkfAIFPLyTwqBQyqSO7mcAdQtcqGHOboA=">
+			<img
+				src="https://upload.wikimedia.org/wikipedia/commons/thumb/4/41/East_facade_Hawa_Mahal_Jaipur_from_ground_level_%28July_2022%29_-_img_01.jpg/1200px-East_facade_Hawa_Mahal_Jaipur_from_ground_level_%28July_2022%29_-_img_01.jpg">
+			<img src="https://www.tourmyindia.com/socialimg/best-places-to-visit-rajasthan.jpg">
+			<img
+				src="https://deih43ym53wif.cloudfront.net/jag-mandir-lake-pichola-udaipur-india-shutterstock_1037132233_6b9ba12f41.jpeg">
+			<img src="https://c.myholidays.com/blog/2023/5/161645_Places%20to%20Visit%20in%20Rajasthan..webp">
+			<img src="https://images.herzindagi.info/image/2022/Nov/travelling-to-rajasthan.jpg">
+			<img
+				src="https://www.tripsavvy.com/thmb/xwPhtLeNq6R5hZo3UnvAr15uBhY=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/india-rajasthan-jodhpur-the-blue-city-645096376-58e50f9a5f9b58ef7e50338d.jpg">
+		</div>
+	</section>
+
+	<section id="booking">
+		<h2>Make a Booking</h2>
+		<form>
+			<label for="name">Name:</label>
+			<input type="text" id="name" name="name"><br><br>
+			<label for="email">Email:</label>
+			<input type="email" id="email" name="email"><br><br>
+			<label for="phone">Phone:</label>
+			<input type="tel" id="phone" name="phone"><br><br>
+			<label for="date">Date:</label>
+			<input type="date" id="date" name="date"><br><br>
+			<label for="message">Message:</label>
+			<textarea id="message" name="message"></textarea><br><br>
+			<input type="submit" value="Submit">
+		</form>
+	</section>
+
+	<script>
+		document.addEventListener('DOMContentLoaded', function () {
+			var navLinks = document.querySelectorAll('nav ul li a');
+	
+			for (var i = 0; i < navLinks.length; i++) {
+				navLinks[i].addEventListener('click', function (event) {
+					event.preventDefault();
+					var targetSection = document.querySelector(this.getAttribute('href'));
+					var targetOffset = targetSection.offsetTop;
+	
+					window.scrollTo({
+						top: targetOffset,
+						behavior: 'smooth'
+					});
+				});
+			}
+		});
+	</script>
+</body>
+
+</html>

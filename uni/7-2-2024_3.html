@@ -1,0 +1,164 @@
+<html>
+
+<head>
+    <style>
+        .board {
+            width: 400px;
+            height: 400px;
+            border: 2px solid black;
+            display: flex;
+            flex-wrap: wrap;
+        }
+
+        .square {
+            width: 50px;
+            height: 50px;
+        }
+
+        .square:nth-child(8n+1),
+        .square:nth-child(8n+2),
+        .square:nth-child(8n+5),
+        .square:nth-child(8n+6) {
+            background-color: black;
+        }
+
+        .square:nth-child(8n+3),
+        .square:nth-child(8n+4),
+        .square:nth-child(8n+7),
+        .square:nth-child(8n+8) {
+            background-color: white;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="board">
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <div class="square"></div>
+        <!-- Repeat 63 more times -->
+    </div>
+</body>
+
+</html>
+
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background-color: #f0f0f0;
+        }
+
+        .fighter-container {
+            display: flex;
+            align-items: center;
+        }
+
+        .left-circles,
+        .right-circles {
+            display: flex;
+            flex-direction: column;
+            align-items: flex-start;
+            /* Align circles to the left in left-circles */
+            margin: 0;
+            /* Remove margin to have circles closer to the edge */
+        }
+
+        .circle {
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            background-color: #3498db;
+            margin: 20px 0;
+            position: relative;
+            overflow: hidden;
+            transition: all 2s;
+        }
+
+        .circle:hover {
+            width: 150px;
+            height: 150px;
+            border-radius: 0;
+        }
+
+        .circle img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .text-container {
+            shape-outside: circle(50%);
+            clip-path: circle(50%);
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="fighter-container">
+        <div class="left-circles">
+            <div class="circle">
+                <div class="text-container">
+                    <p>Circle 1</p>
+                    <p>Text line 1</p>
+                </div>
+                <img src="your_image_url_1.jpg" alt="Circle 1">
+            </div>
+            <div class="circle">
+                <div class="text-container">
+                    <p>Circle 2</p>
+                    <p>Text line 2</p>
+                </div>
+                <img src="your_image_url_2.jpg" alt="Circle 2">
+            </div>
+        </div>
+        <div class="right-circles">
+            <div class="circle">
+                <div class="text-container">
+                    <p>Circle 3</p>
+                    <p>Text line 3</p>
+                </div>
+                <img src="your_image_url_3.jpg" alt="Circle 3">
+            </div>
+            <div class="circle">
+                <div class="text-container">
+                    <p>Circle 4</p>
+                    <p>Text line 4</p>
+                </div>
+                <img src="your_image_url_4.jpg" alt="Circle 4">
+            </div>
+        </div>
+    </div>
+</body>
+
+</html> -->

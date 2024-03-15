@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=<device-width>, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .circle{
+            width:100px;
+            height:100px;
+            border-radius: 50%;
+            background-color:red;
+            border:2px solid black;
+            float: left;
+            margin:25px 25px 5px 0;
+            shape-outside:circle();
+        }
+        .circle:hover{
+            background-color: yellow;
+        }
+        .square{
+            width:200px;
+            height:200px;
+            border:2px solid black;
+            background-color: red;
+        }
+        .square:hover{
+            border-radius: 50%;
+            background-color: yellow;;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+    <div class="circle">
+    </div>
+     <br/>
+    <br/>
+    <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Id consequatur sint dolorem debitis quo possimus alias esse et nulla? Exercitationem, sapiente. Rem laborum magnam, inventore eaque ea tenetur, quae tempora maxime sapiente atque temporibus veritatis ipsam aperiam explicabo nulla maiores voluptatibus eligendi asperiores deleniti eos ab ipsa! Sed iste minima fugit necessitatibus cum sint atque tempora, omnis laborum exercitationem facere recusandae debitis excepturi vitae asperiores facilis. Aspernatur porro minima ab quam cupiditate eaque voluptates, distinctio ut sapiente sint maxime ipsum, necessitatibus ipsa quos corporis iste est blanditiis facere pariatur mollitia ad explicabo, veritatis nulla? Quos eaque aliquid ducimus illo id?</p>
+    <!-- <div class="square"> -->
+    <!-- </div> -->
+    </div>
+</body>
+</html>
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        /* Default style for the square */
+        #shape {
+            width: 200px;
+            height: 200px;
+            background-color: red;
+            transition: background-color 5s;
+        }
+
+        /* Style for the circle on hover */
+        #shape:hover {
+            border-radius: 50%;
+            background-color: yellow;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="shape"></div>
+
+    <script>
+        // Add mouseover event listener to trigger the transition
+        document.getElementById('shape').addEventListener('mouseover', function () {
+            // Change the background color to yellow
+            this.style.backgroundColor = 'yellow';
+        });
+    </script>
+</body>
+
+</html> -->
