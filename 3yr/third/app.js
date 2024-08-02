@@ -6,10 +6,10 @@
 const fs = require("fs");
 // fs.writeFileSync("dostkoudhaarnado.txt","thruth");
 
-fs.writeFile("tumhariFileKyuNhiBanti","data daalna mat bhulo", cb);
+fs.writeFile("tumhariFileKyuNhiBanti", "data daalna mat bhulo", cb);
 
 function cb(err, data) {
-  if (arr) {
+  if (err) {
     console.log(err);
   } else {
     console.log("File created successfully");

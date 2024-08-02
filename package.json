@@ -1,6 +1,9 @@
 {
   "dependencies": {
+    "ejs": "^3.1.10",
     "express": "^4.19.2",
-    "puppeteer": "^22.13.1"
+    "puppeteer": "^22.13.1",
+    "reload": "^3.2.1",
+    "socket.io": "^4.7.5"
   }
 }
