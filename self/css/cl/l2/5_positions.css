@@ -1,0 +1,33 @@
+/* p{
+    position: static;
+} */
+
+div{
+    display: inline-block;
+    width: 150px;
+    height: 150px;
+    background-color: aqua;
+    border: 1px solid black;
+}
+
+#b3{
+    /* position: relative; */
+    position: absolute;
+    left: 15px;
+    top: 100px;
+}
+
+/* #b1{
+    position: fixed;
+} */
+
+#b4{
+    position: sticky;
+    top: 0px;
+}
+
+.wrapper{
+    height: 1000px;
+    width: 100vw;
+    background-color: yellow;
+}

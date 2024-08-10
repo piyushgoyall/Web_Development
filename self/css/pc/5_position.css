@@ -1,0 +1,149 @@
+/* 1 */
+/* body {
+  background: beige;
+}
+
+section {
+  display: block;
+  width: 400px;
+  height: 160px;
+  background: lightgray;
+} 
+
+p {
+  width: 50%; 
+  /* == 400px * .5 = 200px */
+/* height: 25%;  */
+/* == 160px * .25 = 40px */
+/* margin: 5%;  */
+/* == 400px * .05 = 20px */
+/* padding: 5%;  */
+/* == 400px * .05 = 20px */
+/* background: cyan; 
+}
+*/
+
+/* Set the width to 50% of the parent container's width (400px * 0.5 = 200px) */
+/* p {
+  width: 50%;
+} */
+
+/* Set the height to 25% of the parent container's height (160px * 0.25 = 40px) */
+/* p {
+  height: 25%;
+} */
+
+/* Add a margin of 5% around the <p> element (400px * 0.05 = 20px) */
+/* p {
+  margin: 5%;
+} */
+
+/* Add padding of 5% inside the <p> element (400px * 0.05 = 20px) */
+/* p {
+  padding: 5%;
+} */
+
+/* Set the background color of the <p> element to cyan */
+/* p {
+  background: cyan;
+} */
+
+/* 2 */
+
+/* body {
+  background: beige;
+}
+
+section {
+  display: inline;
+  background: lightgray;
+}
+
+p {
+  width: 50%; /* == half the body's width */
+/* height: 200px; */ /* Note: a percentage would be 0 */
+/*  background: cyan;
+} */
+
+/* 3 */
+
+/* body {
+    background: beige;
+  }
+  
+  section {
+    position: absolute;
+    left: 30px;
+    top: 30px;
+    width: 400px;
+    height: 160px;
+    padding: 30px 20px;
+    background: lightgray;
+  }
+  
+  p {
+    position: absolute;
+    width: 50%; 
+    /* == (400px + 20px + 20px) * .5 = 220px */
+/* height: 25%;  */
+/* == (160px + 30px + 30px) * .25 = 55px */
+/* margin: 5%;  */
+/* == (400px + 20px + 20px) * .05 = 22px */
+/* padding: 5%;  */
+/* == (400px + 20px + 20px) * .05 = 22px */
+/*    background: cyan;
+  } */
+
+
+/* 4 */
+
+/* body {
+  background: beige;
+}
+
+section {
+  width: 400px;
+  height: 480px;
+  margin: 30px;
+  padding: 15px;
+  background: lightgray;
+}
+
+p {
+  position: fixed;
+  width: 50%; 
+  /* == (50vw - (width of vertical scrollbar)) */
+  /* height: 50%;  */
+  /* == (50vh - (height of horizontal scrollbar)) */
+  /* margin: 5%;  */
+  /* == (5vw - (width of vertical scrollbar)) */
+  /* padding: 5%;  */
+  /* == (5vw - (width of vertical scrollbar)) */
+/*  background: cyan;
+} */
+
+
+/* 5 */
+
+body {
+    background: beige;
+  }
+  
+  section {
+    transform: rotate(0deg);
+    width: 400px;
+    height: 160px;
+    background: lightgray;
+  }
+  
+  p {
+    position: absolute;
+    left: 80px;
+    top: 30px;
+    width: 50%; /* == 200px */
+    height: 25%; /* == 40px */
+    margin: 5%; /* == 20px */
+    padding: 5%; /* == 20px */
+    background: cyan;
+  }
+  

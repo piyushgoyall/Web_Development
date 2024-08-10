@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Overflow Example</title>
+    <style>
+      .container {
+        width: 200px;
+        height: 150px;
+        border: 1px solid black;
+        margin-bottom: 20px;
+      }
+      .overflow-visible {
+        overflow: visible;
+      }
+      .overflow-hidden {
+        overflow: hidden;
+      }
+      .overflow-scroll {
+        overflow: scroll;
+      }
+      .overflow-auto {
+        overflow: auto;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container overflow-visible">
+      <h2>Overflow: Visible</h2>
+      <p>
+        This is some content that exceeds the size of the box. It will overflow
+        and be visible outside the box.   gwethererymgrvhfgbuwcyegniwxhriouhmoiweuhowx
+      </p>
+    </div>
+
+    <div class="container overflow-hidden">
+      <h2>Overflow: Hidden</h2>
+      <p>
+        This is some content that exceeds the size of the box. It will be hidden
+        and not visible outside the box.  iegbcygnuxegimfmnicgfxniergiukewmrinfenjrgfx
+      </p>
+    </div>
+
+    <div class="container overflow-scroll">
+      <h2>Overflow: Scroll</h2>
+      <p>
+        This is some content that exceeds the size of the box. A scrollbar will
+        be added, allowing you to scroll and view the overflow.
+      </p>
+    </div>
+
+    <div class="container overflow-auto">
+      <h2>Overflow: Auto</h2>
+      <p>
+        This is some content that exceeds the size of the box. A scrollbar will
+        be added only if needed, otherwise, no scrollbar will be shown.
+      </p>
+    </div>
+  </body>
+</html>

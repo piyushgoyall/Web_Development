@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        .box{
+            width: 350px;
+            height: 320px;
+            border: 2px;
+            color: black;
+            /* box-shadow: 10px 10px palevioletred; */
+        }
+        .box2{
+            width: 350px;
+            height: 40px;
+            border: 2px;
+            color: black;
+            /* display: flex;
+            justify-content: space-between;
+            align-items: center; */
+        }
+        .dis{
+            width: 50px;
+            height: 20px;
+            border: 2px;
+            color: black;
+            margin-left: 110px;
+            margin-top: -30px;
+            border-radius: 5px;
+            font-size: 12px;
+            /* text-align: center; */
+            
+        }
+        #disc{
+            background-color: aqua;
+        }
+        #outline{
+            background-color: rgb(239, 145, 145);
+            
+        }
+        #pic{
+            height: 180px;
+            width: 320px;
+            margin-left: 15px;
+            margin-top: 10px;
+            border-radius: 10px;
+        }
+        #head{
+            margin-left: 15px;
+            font-size: 20px;
+            font-weight: bold;
+            font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+        }
+        #price{
+            margin-left: 16px;
+        }
+        #foot{
+            background-color: rgb(255, 255, 0, 0.3);
+            
+        }
+    </style>
+</head>
+<body>
+    <div class="box" id="outline">
+        <img src="./1_card.png" alt="OOPS" id="pic">
+        <p id="head">Web Development Master <br> Course @dot batch</p>
+        <div class="box2" id="foot">
+            <p id="price">₹4500 <s>₹6999</s> <div class="dis" id="disc">42% off</div></p> <!-- instead of using two div use span -->9
+        </div>
+        
+    </div>
+    
+</body>
+</html>

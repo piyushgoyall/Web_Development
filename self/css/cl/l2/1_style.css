@@ -1,0 +1,43 @@
+.box1 {
+  border: 1px solid black;
+  height: 200px;
+  width: 150px;
+  /* background-image: linear-gradient(red, black); */
+  /* background-image: linear-gradient(to right, red, black); */
+  /* background-image: linear-gradient(to left, red, black); */
+  /* background-image: linear-gradient(to bottom, red, black); */
+  /* background-image: linear-gradient(to top, red, black); */
+  /* background-image: linear-gradient(to bottom right, red, black); */
+  /* background-image: linear-gradient(to bottom left, red, black); */
+  /* background-image: linear-gradient(to top right, red, black); */
+  /* background-image: linear-gradient(to top left, red, black); */
+  background-image: linear-gradient(90deg, red, grey, black);
+  background-image: linear-gradient(
+    to bottom,
+    rgba(255, 0, 0, 0),
+    rgba(0, 0, 255, 1)
+  );
+}
+
+.box2 {
+  border: 1px solid black;
+  height: 200px;
+  width: 150px;
+  background-image: linear-gradient(red, black);
+}
+
+.box3 {
+  border: 1px solid black;
+  margin: 10px;
+  height: 400px;
+  width: 200px;
+  background-image: radial-gradient(circle, red, blue, orange);
+  background-image: radial-gradient(yellow 5%, orange 10%, red 50%);
+}
+
+.box4{
+  border: 1px solid black;
+  height: 200px;
+  width: 150px;
+  background-image: linear-gradient(orange,white,green);
+}
