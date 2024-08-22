@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 const plm = require("passport-local-mongoose");
-const users = require("../../../20_G-21/insta_clone/routes/users");
+// const users = require("../../../20_G-21/insta_clone/routes/users");
 mongoose
   .connect(
     "mongodb+srv://admin:zUpNdydFASyyBIDE@cluster0.yw08g.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0"

@@ -1,26 +1,26 @@
 var express = require("express");
 var router = express.Router();
 var userModel = require("./users");
-
 const passport = require("passport");
-const localStratergy = require("passport-local");
+const localStrategy = require("passport-local");
 
-/* GET home page. */
+passport.use(new localStrategy(userModel.authenticate()));
+
+/* GET home page.=> register page */
 router.get("/", function (req, res, next) {
   res.render("index");
 });
 
-// login page route
+//loginpage route
 router.get("/login", (req, res) => {
   res.render("login");
 });
 
-// // register route
-// router.get("/register", (req, res) => {
-//   res.render("register");
-// });
+router.get("/profile", isLoggedIn, (req, res) => {
+  res.render("profile");
+});
 
-// register route
+//register route
 router.post("/register", function (req, res, next) {
   const userData = new userModel({
     username: req.body.username,
@@ -29,15 +29,13 @@ router.post("/register", function (req, res, next) {
   });
 
   userModel.register(userData, req.body.password).then(function () {
-    passport.authenticate(
-      "local"(req, res, function () {
-        res.redirect("/profile");
-      })
-    );
+    passport.authenticate("local")(req, res, function () {
+      res.redirect("/profile");
+    });
   });
 });
 
-// login route
+//login route
 router.post(
   "/login",
   passport.authenticate("local", {
@@ -47,7 +45,7 @@ router.post(
   function (req, res) {}
 );
 
-// logout
+//logout
 router.get("/logout", function (req, res, next) {
   req.logout(function (err) {
     if (err) {
@@ -57,9 +55,9 @@ router.get("/logout", function (req, res, next) {
   });
 });
 
-// isLoggedIn Middleware
-function isLoggedin(req, res, next) {
-  if (req.isAuhtenticate()) return next();
+//isLoggedIn
+function isLoggedIn(req, res, next) {
+  if (req.isAuthenticated()) return next();
   res.redirect("/login");
 }
 
