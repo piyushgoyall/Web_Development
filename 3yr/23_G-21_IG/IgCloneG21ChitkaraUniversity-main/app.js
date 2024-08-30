@@ -20,6 +20,8 @@ app.use(expressSession({
     secret: "zindagijio"
 }))
 
+// app.use("/profiles", express.static(path.join(__dirname, "profiles")));
+
 app.use(passport.initialize())
 app.use(passport.session())
 passport.serializeUser(usersRouter.serializeUser())

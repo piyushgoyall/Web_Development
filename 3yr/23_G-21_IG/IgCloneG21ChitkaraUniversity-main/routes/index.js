@@ -5,6 +5,7 @@ var postModel = require("./post");
 const passport = require("passport");
 const localStrategy = require("passport-local");
 const upload = require("./multer");
+const profileUpload = require("./multer2");
 
 passport.use(new localStrategy(userModel.authenticate()));
 
@@ -25,7 +26,9 @@ router.get("/feed", isLoggedIn, async (req, res) => {
 });
 
 router.get("/profile", isLoggedIn, async (req, res) => {
-  const user = await userModel.findOne({ username: req.session.passport.user }).populate("posts");
+  const user = await userModel
+    .findOne({ username: req.session.passport.user })
+    .populate("posts");
   console.log(user);
   res.render("profile", { user });
 });
@@ -94,5 +97,77 @@ function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) return next();
   res.redirect("/login");
 }
+
+// edit
+
+// // GET route to render the profile edit page
+// router.get("/editProfile", isLoggedIn, (req, res) => {
+//   res.render("editProfile");
+// });
+
+router.get("/editProfile", isLoggedIn, async (req, res) => {
+  const user = await userModel.findOne({ username: req.session.passport.user });
+  res.render("editProfile", { user });
+});
+
+// POST route to handle profile updates
+
+router.post(
+  "/editProfile",
+  isLoggedIn,
+  profileUpload.single("image"),
+  async function (req, res) {
+    const user = await userModel.findOne({
+      username: req.session.passport.user,
+    });
+
+    // Update the user's profile with new picture and bio
+    if (req.file) {
+      user.profileImage = req.file.filename;
+    }
+    if (req.body.bio) {
+      user.bio = req.body.bio;
+    }
+
+    await user.save();
+    res.redirect("/profile");
+  }
+);
+/////
+
+// router.post(
+//   "/editProfile",
+//   isLoggedIn,
+//   upload.single("profileImage"),
+//   async (req, res) => {
+//     try {
+//       const user = await userModel.findOne({
+//         username: req.session.passport.user,
+//       }).populate("user");
+//       console.log(user);
+
+//       if (!user) {
+//         return res.status(404).send("User not found");
+//       }
+
+//       // Update profile picture and bio
+//       if (req.file) {
+//         user.profileImage = req.file.filename; // Save the filename or path as needed
+//       }
+//       if (req.body.bio) {
+//         user.bio = req.body.bio;
+//       }
+
+//       // Save the updated user info
+//       await user.save();
+
+//       // Redirect to the profile page
+//       res.redirect("/profile");
+//     } catch (error) {
+//       console.error(error);
+//       res.status(500).send("Server Error");
+//     }
+//   }
+// );
 
 module.exports = router;
