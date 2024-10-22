@@ -1,0 +1,131 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #fafafa;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.feed-header {
+    background-color: #fff;
+    border-bottom: 1px solid #dbdbdb;
+    padding: 10px 0;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+.container {
+    max-width: 935px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 20px;
+}
+
+.feed-header .logo {
+    font-family: 'Billabong', cursive;
+    font-size: 35px;
+    color: #262626;
+}
+
+.search-bar {
+    border: 1px solid #dbdbdb;
+    border-radius: 3px;
+    padding: 5px;
+    width: 215px;
+}
+
+nav a {
+    margin-left: 20px;
+    text-decoration: none;
+    color: #262626;
+    font-size: 18px;
+}
+
+.feed-container {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    flex-grow: 1;
+}
+
+.feed {
+    max-width: 600px;
+    width: 100%;
+}
+
+.post {
+    background-color: #fff;
+    border: 1px solid #dbdbdb;
+    margin-bottom: 20px;
+}
+
+.post-header {
+    display: flex;
+    align-items: center;
+    padding: 10px;
+}
+
+.user-profile {
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+.username {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.post-image {
+    width: 100%;
+    display: block;
+}
+
+.post-actions {
+    padding: 10px;
+}
+
+.post-actions .action {
+    font-size: 20px;
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+.post-caption {
+    padding: 0 10px 10px;
+}
+
+.post-caption .username {
+    font-weight: bold;
+}
+
+/* Footer styling */
+.feed-footer {
+    background-color: #fff;
+    border-top: 1px solid #dbdbdb;
+    padding: 10px 0;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    position: sticky;
+    bottom: 0;
+    z-index: 1000;
+}
+
+.feed-footer a {
+    font-size: 24px;
+    color: #262626;
+    text-decoration: none;
+}
+
+.feed-footer a:hover {
+    color: #0095f6;
+}

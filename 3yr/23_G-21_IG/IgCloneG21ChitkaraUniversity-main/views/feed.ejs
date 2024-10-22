@@ -104,7 +104,7 @@
               </div>
               <button class="btn btn-sm btn-outline-secondary">Follow</button>
             </div>
-            <img src="../public/images/uploads/<%= elem.picture %>" class="card-img-top" alt="Post Image" />
+            <img src="/images/uploads/<%= elem.picture %>" class="card-img-top" alt="Post Image" />
             <div class="card-body">
               <div class="d-flex justify-content-between">
                 <button class="btn btn-outline-danger btn-sm like-btn">
@@ -115,7 +115,7 @@
                 </button>
                 <button class="btn btn-outline-success btn-sm">Share</button>
               </div>
-              <p class="mt-3"><strong>username</strong> A beautiful day!</p>
+              <p class="mt-3"><strong><%=user.name%></strong>  <%= elem.caption%></p>
               <p class="text-muted">View all 10 comments</p>
             </div>
           </div>

@@ -41,43 +41,36 @@
     <div class="container profile-edit-container">
       <div class="profile-edit-header">
         <img
-          src="/images/uploads/<%= user.profileImage %>"
+          src="https://via.placeholder.com/100"
           alt="Profile Picture"
           id="profilePreview"
         />
-        <!-- <h2>Edit Profile</h2> -->
+        <h2>Edit Profile</h2>
       </div>
 
-      <form action="/editProfile" method="POST" enctype="multipart/form-data">
+      <form>
         <div class="form-group mb-3">
-          <label for="profilePic">Profile Picture</label>
+          <label for="profilePicLink">Profile Picture URL</label>
           <input
-            type="file"
+            type="text"
             class="form-control"
-            id="profilePic"
-            name="image"
-            accept="image/*"
+            id="profilePicLink"
+            placeholder="Enter profile picture link"
           />
         </div>
-
-        <h6><%=user.name%></h6>
-        <input type="text" name="name">
 
         <div class="form-group mb-3">
           <label for="bio">Bio</label>
           <textarea
             class="form-control"
             id="bio"
-            name="bio"
             rows="3"
             placeholder="Enter your bio"
-          >
-<%= user.bio %></textarea
-          >
+          ></textarea>
         </div>
 
         <button type="submit" class="btn btn-primary w-100">
-          Done
+          Save Changes
         </button>
       </form>
     </div>
@@ -85,19 +78,11 @@
     <script>
       // Preview profile picture
       document
-        .getElementById("profilePic")
-        .addEventListener("change", function () {
-          const file = this.files[0];
-          if (file) {
-            const reader = new FileReader();
-            reader.onload = function (e) {
-              document.getElementById("profilePreview").src = e.target.result;
-            };
-            reader.readAsDataURL(file);
-          } else {
-            document.getElementById("profilePreview").src =
-              "https://via.placeholder.com/100";
-          }
+        .getElementById("profilePicLink")
+        .addEventListener("input", function () {
+          const link = this.value;
+          document.getElementById("profilePreview").src =
+            link || "https://via.placeholder.com/100";
         });
     </script>
 

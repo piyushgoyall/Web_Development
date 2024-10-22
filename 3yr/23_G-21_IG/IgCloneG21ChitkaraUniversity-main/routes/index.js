@@ -112,27 +112,41 @@ router.get("/editProfile", isLoggedIn, async (req, res) => {
 
 // POST route to handle profile updates
 
-router.post(
-  "/editProfile",
-  isLoggedIn,
-  profileUpload.single("image"),
-  async function (req, res) {
-    const user = await userModel.findOne({
-      username: req.session.passport.user,
-    });
+router.post("/editProfile", upload.single("image"), async function (req, res) {
+  const user = await userModel.findOneAndUpdate(
+    { username: req.session.passport.user },
+    { username: req.body.username, name: req.body.name, bio: req.body.bio }
+  );
 
-    // Update the user's profile with new picture and bio
-    if (req.file) {
-      user.profileImage = req.file.filename;
-    }
-    if (req.body.bio) {
-      user.bio = req.body.bio;
-    }
-
-    await user.save();
-    res.redirect("/profile");
+  if (req.file) {
+    user.profileImage = req.file.filename;
   }
-);
+
+  await user.save();
+  redirect("/profile");
+});
+
+// router.post(
+//   "/editProfile",
+//   isLoggedIn,
+//   profileUpload.single("image"),
+//   async function (req, res) {
+//     const user = await userModel.findOne({
+//       username: req.session.passport.user,
+//     });
+
+//     // Update the user's profile with new picture and bio
+//     if (req.file) {
+//       user.profileImage = req.file.filename;
+//     }
+//     if (req.body.bio) {
+//       user.bio = req.body.bio;
+//     }
+
+//     await user.save();
+//     res.redirect("/profile");
+//   }
+// );
 /////
 
 // router.post(

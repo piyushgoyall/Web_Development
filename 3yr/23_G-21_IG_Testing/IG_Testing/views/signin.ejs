@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Sign In - Instagram Style</title>
+    <link rel="stylesheet" href="./stylesheets/signin.css" />
+  </head>
+  <body>
+    <div class="signin-container">
+      <div class="signin-box">
+        <h1 class="logo">Instagram</h1>
+
+        <form class="signin-form" method="post" action="/login">
+          <input type="text" placeholder="username" name="username" required />
+          <input
+            type="password"
+            placeholder="Password"
+            name="password"
+            required
+          />
+          <button type="submit">Log In</button>
+        </form>
+
+        <div class="or-divider">
+          <hr />
+          <span>OR</span>
+          <hr />
+        </div>
+
+        <div class="social-login">
+          <a href="#" class="facebook-login">Log in with Facebook</a>
+        </div>
+
+        <a href="#" class="forgot-password">Forgot password?</a>
+      </div>
+
+      <div class="signup-box">
+        <p>Don't have an account? <a href="/signup">Sign up</a></p>
+      </div>
+    </div>
+  </body>
+</html>
