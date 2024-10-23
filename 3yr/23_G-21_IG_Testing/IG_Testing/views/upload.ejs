@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Instagram Post Upload</title>
+    <link rel="stylesheet" href="./stylesheets/upload.css" />
+  </head>
+  <body>
+    <div class="container">
+      <header>
+        <div class="logo">Instagram</div>
+        <div class="menu">
+          <a href="#">Home</a>
+          <a href="#">Profile</a>
+          <a href="#">Upload Post</a>
+          <a href="#">Messages</a>
+        </div>
+      </header>
+
+      <div class="upload-section">
+        <h2>Upload a New Post</h2>
+        <form action="/upload" method="post" enctype="multipart/form-data">
+          <label for="image">Select Image:</label>
+          <input
+            type="file"
+            id="post-image"
+            name="image"
+            accept="image/*"
+            required
+          />
+
+          <label for="caption">Caption:</label>
+          <textarea
+            id="caption"
+            name="caption"
+            rows="4"
+            placeholder="Write a caption..."
+            required
+          ></textarea>
+
+          <button type="submit">Post</button>
+        </form>
+      </div>
+
+      <footer>
+        <p>Instagram Clone - 2024</p>
+      </footer>
+    </div>
+  </body>
+</html>

@@ -1,0 +1,100 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  background-color: #fafafa;
+}
+
+.container {
+  width: 100%;
+  max-width: 600px;
+  margin: 0 auto;
+  background-color: white;
+  border: 1px solid #dbdbdb;
+}
+
+header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #dbdbdb;
+  background-color: #fff;
+}
+
+.logo {
+  font-size: 24px;
+  font-weight: bold;
+  color: #262626;
+}
+
+.menu a {
+  margin: 0 10px;
+  color: #262626;
+  text-decoration: none;
+  font-size: 16px;
+}
+
+.menu a:hover {
+  text-decoration: underline;
+}
+
+.upload-section {
+  padding: 20px;
+  text-align: center;
+}
+
+.upload-section h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+label {
+  font-size: 16px;
+  margin-bottom: 10px;
+}
+
+input[type="file"] {
+  margin-bottom: 15px;
+}
+
+textarea {
+  width: 100%;
+  max-width: 500px;
+  padding: 10px;
+  margin-bottom: 20px;
+  border: 1px solid #dbdbdb;
+  border-radius: 5px;
+}
+
+button {
+  padding: 10px 20px;
+  background-color: #0095f6;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: #007bb5;
+}
+
+footer {
+  text-align: center;
+  padding: 10px;
+  border-top: 1px solid #dbdbdb;
+  background-color: #fff;
+  font-size: 14px;
+  color: #8e8e8e;
+}

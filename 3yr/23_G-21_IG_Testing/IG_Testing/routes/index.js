@@ -4,6 +4,7 @@ const userModel = require("./users");
 const postModel = require("./post");
 const passport = require("passport");
 const localStrategy = require("passport-local");
+const upload = require("./multer");
 
 passport.use(new localStrategy(userModel.authenticate()));
 
@@ -17,8 +18,28 @@ router.get("/signin", (req, res) => {
 
 router.get("/feed", isLoggedIn, async (req, res) => {
   const user = await userModel.findOne({ username: req.session.passport.user });
+  const posts = await postModel.find().populate("user");
   console.log(user);
-  res.render("feed");
+  console.log(posts);
+  res.render("feed", { user, posts });
+});
+
+router.get("/upload", isLoggedIn, (req, res) => {
+  res.render("upload");
+});
+
+router.post("/upload", isLoggedIn, upload.single("image"), async (req, res) => {
+  const user = await userModel.findOne({ username: req.session.passport.user });
+  const post = await postModel.create({
+    picture: req.file.filename,
+    user: user._id,
+    caption: req.body.caption,
+  });
+
+  user.posts.push(post._id);
+  await user.save();
+
+  res.redirect("/feed");
 });
 
 /* GET home page. */
@@ -42,7 +63,8 @@ router.post("/register", function (req, res, next) {
 
   userModel.register(userData, req.body.password).then(function () {
     passport.authenticate("local")(req, res, function () {
-      res.redirect("/feed");
+      // res.redirect("/feed");
+      res.send("Picture Posted");
     });
   });
 });

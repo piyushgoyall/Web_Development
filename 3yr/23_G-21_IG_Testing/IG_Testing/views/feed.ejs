@@ -23,46 +23,31 @@
 
     <main class="feed-container">
         <div class="feed">
-            <!-- Post 1 -->
-            <div class="post">
+            <% posts.reverse().forEach(function(elem){%>
+                <div class="post">
                 <div class="post-header">
                     <img src="https://via.placeholder.com/50" alt="user-profile" class="user-profile">
-                    <p class="username">user1</p>
+                    <p class="username"><%= elem.user.username%></p>
                 </div>
-                <img src="https://via.placeholder.com/500" alt="post-image" class="post-image">
+                <img src="./images/uploads/<%=elem.picture%>" alt="post-image" class="post-image">
                 <div class="post-actions">
                     <span class="action">❤</span>
                     <span class="action">💬</span>
                     <span class="action">✈</span>
                 </div>
                 <div class="post-caption">
-                    <p><span class="username">user1</span> This is a beautiful place!</p>
+                    <p><span class="username"><%= user.username%></span> <%= elem.caption%></p>
                 </div>
             </div>
+            <%}) %>
 
-            <!-- Post 2 -->
-            <div class="post">
-                <div class="post-header">
-                    <img src="https://via.placeholder.com/50" alt="user-profile" class="user-profile">
-                    <p class="username">user2</p>
-                </div>
-                <img src="https://via.placeholder.com/500" alt="post-image" class="post-image">
-                <div class="post-actions">
-                    <span class="action">❤</span>
-                    <span class="action">💬</span>
-                    <span class="action">✈</span>
-                </div>
-                <div class="post-caption">
-                    <p><span class="username">user2</span> Loving the vibes here!</p>
-                </div>
-            </div>
         </div>
     </main>
 
     <footer class="feed-footer">
         <a href="#"><i class="fas fa-home"></i></a>
         <a href="#"><i class="fas fa-search"></i></a>
-        <a href="#"><i class="fas fa-plus-square"></i></a>
+        <a href="/upload"><i class="fas fa-plus-square"></i></a>
         <a href="#"><i class="fas fa-user"></i></a>
     </footer>
 </body>
