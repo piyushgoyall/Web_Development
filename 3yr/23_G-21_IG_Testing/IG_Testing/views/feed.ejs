@@ -1,111 +1,180 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Instagram Style Feed</title>
     <link rel="stylesheet" href="./stylesheets/feed.css" />
-    <!-- Icons -->
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
-    <style>
-        .user-profile {
-            width: 50px;
-            height: 50px;
-            object-fit: cover;
-            border-radius: 50%;
-        }
-        .like-btn {
-            cursor: pointer;
-            font-size: 1.5rem;
-            display: inline-block;
-        }
-        .like-count {
-            display: inline-block;
-            margin-left: 0px;
-            font-weight: bold;
-        }
-        .post-actions {
-            display: flex;
-            align-items: center;
-        }
-        .post-actions .action {
-            margin-right: 10px;
-        }
-    </style>
-</head>
-<body>
+  </head>
+  <body>
     <header class="feed-header">
-        <div class="container">
-            <h1 class="logo">Instagram</h1>
-            <input type="text" placeholder="Search" class="search-bar" />
-            <nav>
-                <a href="#">Home</a>
-                <a href="#">Messages</a>
-                <a href="#">Profile</a>
-            </nav>
-        </div>
+      <div class="container">
+        <img src="/images/instagram-logo.png" alt="logo" class="logo-img" />
+        <h1 class="logo">Instagram</h1>
+      </div>
     </header>
 
+    <!-- Sidebar Structure -->
+    <div class="sidebar">
+      <div class="sidebar-logo">
+        <h1>Instagram</h1>
+      </div>
+      <a href="/feed"><i class="fas fa-home"></i> Home</a>
+      <a href="#"><i class="fas fa-search"></i> Search</a>
+      <a href="#"><i class="fas fa-compass"></i> Explore</a>
+      <a href="#"><i class="fas fa-video"></i> Reels</a>
+      <a href="#"><i class="fas fa-envelope"></i> Messages</a>
+      <a href="#"><i class="fas fa-heart"></i> Notifications</a>
+      <a href="/upload"><i class="fas fa-plus-square"></i> Create</a>
+      <a href="/profile"><i class="fas fa-user"></i> Profile</a>
+    </div>
+
     <main class="feed-container">
-        <div class="feed">
-            <% posts.reverse().forEach(function(elem){ %>
-            <div class="post">
-                <div class="post-header">
-                    <img src="./images/profiles/<%= elem.user.profileImage %>" alt="user-profile" class="user-profile" />
-                    <p class="username"><%= elem.user.username %></p>
-                </div>
-                <img src="./images/uploads/<%= elem.picture %>" alt="post-image" class="post-image" />
-                <div class="post-actions">
-                    <!-- Like Button -->
-                    <span class="action like-btn" data-post-id="<%= elem._id %>" data-liked="<%= elem.likes.includes(user._id) %>">
-                        <%= elem.likes.includes(user._id) ? '❤️' : '🤍' %>
-                    </span>
-                    <!-- Like Count -->
-                    <span class="like-count"><%= elem.likes.length %></span>
-                    <!-- Other Action Icons -->
-                    <span class="action"><i class="fas fa-comment"></i></span>
-                    <span class="action"><i class="fas fa-paper-plane"></i></span>
-                </div>
-                <div class="post-caption">
-                    <p><span class="username"><%= elem.user.username %></span> <%= elem.caption %></p>
-                </div>
+      <div class="feed">
+        <% posts.reverse().forEach(function(elem){ %>
+        <div class="post">
+          <div class="post-header">
+            <img
+              src="./images/profiles/<%= elem.user.profileImage %>"
+              alt="user-profile"
+              class="user-profile"
+            />
+            <p class="username"><%= elem.user.username %></p>
+          </div>
+          <img
+            src="./images/uploads/<%= elem.picture %>"
+            alt="post-image"
+            class="post-image"
+          />
+          <div class="post-actions">
+            <div class="icons">
+              <span
+                class="action like-btn"
+                data-post-id="<%= elem._id %>"
+                data-liked="<%= elem.likes.includes(user._id) %>"
+              >
+                <%= elem.likes.includes(user._id) ? '❤️' : '🖤' %>
+              </span>
+              <span class="action comment-btn" data-post-id="<%= elem._id %>">
+                <i class="fas fa-comment"></i>
+              </span>
+              <span class="action share-btn"
+                ><i class="fas fa-paper-plane"></i
+              ></span>
             </div>
-            <% }) %>
+            <span class="like-count"><%= elem.likes.length %> likes</span>
+          </div>
+          <div class="post-caption">
+            <p>
+              <span class="username"><%= elem.user.username %></span> <%=
+              elem.caption %>
+            </p>
+          </div>
         </div>
+        <% }) %>
+      </div>
     </main>
+    <!-- <footer class="feed-footer">
+      <a href="/feed"><i class="fas fa-home"></i></a>
+      <a href="#"><i class="fas fa-search"></i></a>
+      <a href="/upload"><i class="fas fa-plus-square"></i></a>
+      <a href="/profile"><i class="fas fa-user"></i></a>
+    </footer> -->
 
-    <footer class="feed-footer">
-        <a href="#"><i class="fas fa-home"></i></a>
-        <a href="#"><i class="fas fa-search"></i></a>
-        <a href="/upload"><i class="fas fa-plus-square"></i></a>
-        <a href="/profile"><i class="fas fa-user"></i></a>
-    </footer>
+    <!-- Modal Structure -->
+    <div class="modal-overlay" id="commentModal">
+      <div class="modal-close" onclick="closeModal()">✖</div>
+      <div class="modal-content">
+        <div class="modal-post-image" id="modalPostImage"></div>
+        <div class="modal-comments">
+          <div id="commentList"></div>
+          <div class="comment-input">
+            <input
+              type="text"
+              placeholder="Add a comment..."
+              id="commentInput"
+            />
+            <button onclick="submitComment()">Post</button>
+          </div>
+        </div>
+      </div>
+    </div>
 
-    <!-- Script to handle like button functionality -->
     <script>
-    document.querySelectorAll('.like-btn').forEach(button => {
-        button.addEventListener('click', async function () {
-            const postId = this.dataset.postId;
-            const isLiked = this.dataset.liked === 'true';
+      function closeModal() {
+        document.getElementById("commentModal").style.display = "none";
+      }
 
-            const response = await fetch(`/likePost/${postId}`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-            });
-
-            const data = await response.json();
-            if (data.success) {
-                this.dataset.liked = !isLiked;
-                this.innerHTML = data.liked ? '❤️' : '🤍';
-                this.closest('.post-actions').querySelector('.like-count').innerHTML = data.likeCount;
-            }
+      document.querySelectorAll(".like-btn").forEach((button) => {
+        button.addEventListener("click", async function () {
+          const postId = this.dataset.postId;
+          const isLiked = this.dataset.liked === "true";
+          const response = await fetch(`/likePost/${postId}`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          });
+          const data = await response.json();
+          if (data.success) {
+            this.dataset.liked = !isLiked;
+            this.innerHTML = data.liked ? "❤️" : "🖤";
+            this.style.border = data.liked
+              ? "1px solid red"
+              : "1px solid black"; // Change border color
+            this.closest(".post-actions").querySelector(
+              ".like-count"
+            ).innerHTML = `${data.likeCount} likes`;
+          }
         });
-    });
+      });
+
+      document.querySelectorAll(".comment-btn").forEach((button) => {
+        button.addEventListener("click", async function () {
+          const postId = this.getAttribute("data-post-id");
+          const response = await fetch(`/getPostComments/${postId}`);
+          const data = await response.json();
+
+          if (data.success) {
+            document.getElementById(
+              "modalPostImage"
+            ).style.backgroundImage = `url('/images/uploads/${data.post.picture}')`;
+            const commentList = document.getElementById("commentList");
+            commentList.innerHTML = "";
+            data.comments.forEach((comment) => {
+              const commentElem = document.createElement("p");
+              commentElem.textContent = `${comment.user.username}: ${comment.text}`;
+              commentList.appendChild(commentElem);
+            });
+            document.getElementById("commentModal").style.display = "flex";
+          }
+        });
+      });
+
+      async function submitComment() {
+        const postId = document
+          .querySelector(".comment-btn[data-post-id]")
+          .getAttribute("data-post-id");
+        const commentText = document.getElementById("commentInput").value;
+        if (commentText.trim() !== "") {
+          const response = await fetch(`/addComment/${postId}`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ text: commentText }),
+          });
+          const data = await response.json();
+          if (data.success) {
+            const newComment = document.createElement("p");
+            newComment.textContent = `${data.comment.user.username}: ${data.comment.text}`;
+            document.getElementById("commentList").appendChild(newComment);
+            document.getElementById("commentInput").value = "";
+          }
+        }
+      }
     </script>
-</body>
+  </body>
 </html>

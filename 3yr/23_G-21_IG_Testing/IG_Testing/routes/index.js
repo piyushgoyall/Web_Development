@@ -2,6 +2,7 @@ var express = require("express");
 var router = express.Router();
 const userModel = require("./users");
 const postModel = require("./post");
+const Comment = require("./comment");
 const passport = require("passport");
 const localStrategy = require("passport-local");
 const upload = require("./multer");
@@ -103,9 +104,48 @@ router.post("/likePost/:postId", isLoggedIn, async (req, res) => {
   res.json({ success: true, liked: !hasLiked, likeCount: post.likes.length });
 });
 
+// Route to fetch comments for a specific post
+router.get("/getPostComments/:postId", async (req, res) => {
+    const post = await postModel.findById(req.params.postId).populate({
+      path: "comments",
+      populate: { path: "user", select: "username" },
+    });
+
+    res.json({
+      success: true,
+      post: { picture: post.picture },
+      comments: post.comments.map((comment) => ({
+        user: { username: comment.user.username },
+        text: comment.text,
+      })),
+    });
+});
+
+// Route to add a comment to a specific post
+router.post("/addComment/:postId", isLoggedIn, async (req, res) => {
+    const post = await postModel.findById(req.params.postId);
+
+    const comment = await Comment.create({
+      text: req.body.text,
+      user: req.user._id,
+    });
+
+    post.comments.push(comment._id);
+    await post.save();
+
+    res.json({
+      success: true,
+      comment: { text: comment.text },
+      user: { username: req.user.username },
+    });
+});
+
+
 /* GET home page. */
 router.get("/", function (req, res, next) {
-  res.render("index", { title: "Express" });
+  // res.render("index", { title: "Express" });
+  res.render("signup");
+
 });
 
 router.get("/profile", (req, res) => {

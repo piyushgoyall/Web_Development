@@ -17,7 +17,7 @@ const userSchema = mongoose.Schema({
   bio: String,
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
   likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "likes" }],
-  comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comments" }],
+  // comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comments" }],
   followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "followers" }],
   following: [{ type: mongoose.Schema.Types.ObjectId, ref: "following" }],
 });
