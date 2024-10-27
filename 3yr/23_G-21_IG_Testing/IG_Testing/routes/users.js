@@ -9,18 +9,20 @@ mongoose
   .catch(() => console.log("Database connection establishment failed"));
 
 const userSchema = mongoose.Schema({
-  username: String,
+  username: { type: String, unique: true, required: true },
   name: String,
   email: String,
   password: String,
   profileImage: { type: String },
   bio: String,
   posts: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
-  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "likes" }],
-  // comments: [{ type: mongoose.Schema.Types.ObjectId, ref: "comments" }],
-  followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "followers" }],
-  following: [{ type: mongoose.Schema.Types.ObjectId, ref: "following" }],
+  likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
+  followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
+  following: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
+  // followRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }], // New field for follow requests
 });
 
 userSchema.plugin(plm);
+userSchema.index({ username: 1 }, { unique: true });
+
 module.exports = mongoose.model("user", userSchema);

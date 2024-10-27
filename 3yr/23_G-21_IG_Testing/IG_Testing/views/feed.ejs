@@ -31,11 +31,14 @@
       <a href="#"><i class="fas fa-heart"></i> Notifications</a>
       <a href="/upload"><i class="fas fa-plus-square"></i> Create</a>
       <a href="/profile"><i class="fas fa-user"></i> Profile</a>
+      <a href="/followRequests"
+        ><i class="fas fa-user-friends"></i> Follow Requests</a
+      >
     </div>
 
     <main class="feed-container">
       <div class="feed">
-        <% posts.reverse().forEach(function(elem){ %>
+        <% posts.reverse().forEach(function(elem) { %>
         <div class="post">
           <div class="post-header">
             <img
@@ -77,13 +80,13 @@
         </div>
         <% }) %>
       </div>
+
+      <!-- Suggested Users Section -->
+      <div class="random-users-section">
+        <h3>Suggested Users</h3>
+        <div id="randomUsersContainer"></div>
+      </div>
     </main>
-    <!-- <footer class="feed-footer">
-      <a href="/feed"><i class="fas fa-home"></i></a>
-      <a href="#"><i class="fas fa-search"></i></a>
-      <a href="/upload"><i class="fas fa-plus-square"></i></a>
-      <a href="/profile"><i class="fas fa-user"></i></a>
-    </footer> -->
 
     <!-- Modal Structure -->
     <div class="modal-overlay" id="commentModal">
@@ -115,9 +118,7 @@
           const isLiked = this.dataset.liked === "true";
           const response = await fetch(`/likePost/${postId}`, {
             method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
+            headers: { "Content-Type": "application/json" },
           });
           const data = await response.json();
           if (data.success) {
@@ -175,6 +176,41 @@
           }
         }
       }
+
+      // Suggested Users Fetch
+      async function fetchRandomUsers() {
+        const response = await fetch("/randomUsers");
+        const data = await response.json();
+
+        if (data.success) {
+          const container = document.getElementById("randomUsersContainer");
+          container.innerHTML = "";
+          data.users.forEach((user) => {
+            const userElem = document.createElement("div");
+            userElem.classList.add("random-user");
+            userElem.innerHTML = `
+                        <p class="username"><a href="/profile/${user._id}">${user.username}</a></p>
+                        <button onclick="toggleFollow('${user._id}', this)">Follow</button>
+                    `;
+            container.appendChild(userElem);
+          });
+        }
+      }
+
+      // async function toggleFollow(userId, button) {
+      //   const response = await fetch(`/follow/${userId}`, {
+      //     method: "POST",
+      //     headers: { "Content-Type": "application/json" },
+      //   });
+      //   const data = await response.json();
+
+      //   if (data.success) {
+      //     button.innerText =
+      //       button.innerText === "Follow" ? "Unfollow" : "Follow";
+      //   }
+      // }
+
+      fetchRandomUsers();
     </script>
   </body>
 </html>

@@ -106,53 +106,135 @@ router.post("/likePost/:postId", isLoggedIn, async (req, res) => {
 
 // Route to fetch comments for a specific post
 router.get("/getPostComments/:postId", async (req, res) => {
-    const post = await postModel.findById(req.params.postId).populate({
-      path: "comments",
-      populate: { path: "user", select: "username" },
-    });
+  const post = await postModel.findById(req.params.postId).populate({
+    path: "comments",
+    populate: { path: "user", select: "username" },
+  });
 
-    res.json({
-      success: true,
-      post: { picture: post.picture },
-      comments: post.comments.map((comment) => ({
-        user: { username: comment.user.username },
-        text: comment.text,
-      })),
-    });
+  res.json({
+    success: true,
+    post: { picture: post.picture },
+    comments: post.comments.map((comment) => ({
+      user: { username: comment.user.username },
+      text: comment.text,
+    })),
+  });
 });
 
 // Route to add a comment to a specific post
 router.post("/addComment/:postId", isLoggedIn, async (req, res) => {
-    const post = await postModel.findById(req.params.postId);
+  const post = await postModel.findById(req.params.postId);
 
-    const comment = await Comment.create({
-      text: req.body.text,
-      user: req.user._id,
-    });
+  const comment = await Comment.create({
+    text: req.body.text,
+    user: req.user._id,
+  });
 
-    post.comments.push(comment._id);
-    await post.save();
+  post.comments.push(comment._id);
+  await post.save();
 
-    res.json({
-      success: true,
-      comment: { text: comment.text },
-      user: { username: req.user.username },
-    });
+  res.json({
+    success: true,
+    comment: { text: comment.text },
+    user: { username: req.user.username },
+  });
 });
 
+// Route to get 5 random users
+router.get("/randomUsers", async (req, res) => {
+  try {
+    const userId = req.user._id; // Get the logged-in user's ID
+    const users = await userModel.aggregate([
+      { $match: { _id: { $ne: userId } } },
+      { $sample: { size: 5 } }, // Retrieve 5 random users
+    ]);
+    res.json({ success: true, users });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
+
+// // Follow/unfollow user
+// router.post("/follow/:userId", async (req, res) => {
+//   const currentUserId = req.user._id;
+//   const targetUserId = req.params.userId;
+
+//   try {
+//     const currentUser = await userModel.findById(currentUserId);
+//     const targetUser = await userModel.findById(targetUserId);
+
+//     if (currentUser.following.includes(targetUserId)) {
+//       // Unfollow logic
+//       currentUser.following.pull(targetUserId);
+//       targetUser.followers.pull(currentUserId);
+//     } else {
+//       // Follow logic
+//       currentUser.following.push(targetUserId);
+//       targetUser.followers.push(currentUserId);
+//     }
+
+//     await currentUser.save();
+//     await targetUser.save();
+//     res.json({ success: true });
+//   } catch (err) {
+//     res.json({ success: false, message: err.message });
+//   }
+// });
+
+// router.get("/followRequests", isLoggedIn, async (req, res) => {
+//   try {
+//     const user = await userModel
+//       .findById(req.user._id)
+//       .populate("followRequests");
+
+//     res.render("followRequests", { user, followRequests: user.followRequests });
+//   } catch (error) {
+//     res.status(500).send("Error fetching follow requests.");
+//   }
+// });
+
+// router.post("/follow/:userId", isLoggedIn, async (req, res) => {
+//   const currentUser = await userModel.findById(req.user._id);
+//   const targetUser = await userModel.findById(req.params.userId);
+
+//   if (targetUser.followers.includes(currentUser._id)) {
+//     currentUser.following.pull(targetUser._id);
+//     targetUser.followers.pull(currentUser._id);
+//   } else if (!targetUser.followRequests.includes(currentUser._id)) {
+//     targetUser.followRequests.push(currentUser._id);
+//   }
+
+//   await currentUser.save();
+//   await targetUser.save();
+//   res.json({ success: true });
+// });
+
+// router.post("/acceptFollowRequest/:userId", isLoggedIn, async (req, res) => {
+//   const currentUser = await userModel.findById(req.user._id);
+//   const requester = await userModel.findById(req.params.userId);
+
+//   if (currentUser.followRequests.includes(requester._id)) {
+//     currentUser.followers.push(requester._id);
+//     requester.following.push(currentUser._id);
+//     currentUser.followRequests.pull(requester._id);
+//   }
+
+//   await currentUser.save();
+//   await requester.save();
+//   res.json({ success: true });
+// });
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
   // res.render("index", { title: "Express" });
   res.render("signup");
-
 });
 
-router.get("/profile", (req, res) => {
-  res.json({
-    message: "profile page found",
-  });
-});
+// router.get("/profile", (req, res) => {
+//   res.json({
+//     message: "profile page found",
+//   });
+// });
 
 //register
 router.post("/register", function (req, res, next) {
@@ -162,12 +244,24 @@ router.post("/register", function (req, res, next) {
     name: req.body.name,
   });
 
-  userModel.register(userData, req.body.password).then(function () {
-    passport.authenticate("local")(req, res, function () {
-      // res.redirect("/feed");
-      res.send("Picture Posted");
+  userModel
+    .register(userData, req.body.password)
+    .then(function () {
+      passport.authenticate("local")(req, res, function () {
+        res.redirect("feed");
+        // res.send("Picture Posted");
+      });
+    })
+    .catch(function (error) {
+      if (error.code === 11000) {
+        // MongoDB duplicate key error code
+        res
+          .status(400)
+          .send("Username already taken. Please choose a different one.");
+      } else {
+        res.status(500).send("Registration failed. Please try again.");
+      }
     });
-  });
 });
 
 //login
@@ -179,6 +273,10 @@ router.post(
   }),
   function (req, res) {}
 );
+
+router.get("/login", (req, res) => {
+  res.render("signin");
+});
 
 // logout
 router.get("/logout", function (req, res) {
