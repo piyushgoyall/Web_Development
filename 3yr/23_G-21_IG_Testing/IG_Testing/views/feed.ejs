@@ -14,7 +14,8 @@
     <header class="feed-header">
       <div class="container">
         <img src="/images/instagram-logo.png" alt="logo" class="logo-img" />
-        <h1 class="logo">Instagram</h1>
+        <h1 class="logo"></h1>
+        <div class="user-greeting">Hi, <%= user.username %></div>
       </div>
     </header>
 
@@ -28,12 +29,11 @@
       <a href="#"><i class="fas fa-compass"></i> Explore</a>
       <a href="#"><i class="fas fa-video"></i> Reels</a>
       <a href="#"><i class="fas fa-envelope"></i> Messages</a>
-      <a href="#"><i class="fas fa-heart"></i> Notifications</a>
+      <a href="/followRequests"><i class="fas fa-heart"></i> Notifications</a>
       <a href="/upload"><i class="fas fa-plus-square"></i> Create</a>
       <a href="/profile"><i class="fas fa-user"></i> Profile</a>
-      <a href="/followRequests"
-        ><i class="fas fa-user-friends"></i> Follow Requests</a
-      >
+      <!-- <a href="/followRequests"
+        ><i class="fas fa-user-friends"></i> Follow Requests</a> -->
     </div>
 
     <main class="feed-container">
@@ -197,18 +197,18 @@
         }
       }
 
-      // async function toggleFollow(userId, button) {
-      //   const response = await fetch(`/follow/${userId}`, {
-      //     method: "POST",
-      //     headers: { "Content-Type": "application/json" },
-      //   });
-      //   const data = await response.json();
+      async function toggleFollow(userId, button) {
+        const response = await fetch(`/follow/${userId}`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+        });
+        const data = await response.json();
 
-      //   if (data.success) {
-      //     button.innerText =
-      //       button.innerText === "Follow" ? "Unfollow" : "Follow";
-      //   }
-      // }
+        if (data.success) {
+          button.innerText =
+            button.innerText === "Follow" ? "Unfollow" : "Follow";
+        }
+      }
 
       fetchRandomUsers();
     </script>

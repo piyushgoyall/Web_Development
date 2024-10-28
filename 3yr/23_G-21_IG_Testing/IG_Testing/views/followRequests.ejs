@@ -5,10 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Follow Requests</title>
     <link rel="stylesheet" href="./stylesheets/followRequests.css" />
-    <!-- Link to your CSS file -->
     <script>
-      function acceptRequest(username) {
-        fetch(`/acceptFollowRequest/${username}`, {
+      function handleRequest(username, action) {
+        fetch(`/${action}FollowRequest/${username}`, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
@@ -17,10 +16,14 @@
           .then((response) => response.json())
           .then((data) => {
             if (data.success) {
-              alert(`${username} has been accepted!`);
+              alert(
+                `${username} has been ${
+                  action === "accept" ? "accepted" : "rejected"
+                }!`
+              );
               location.reload(); // Reload the page to update the list
             } else {
-              alert("Failed to accept follow request.");
+              alert(`Failed to ${action} follow request.`);
             }
           });
       }
@@ -33,17 +36,26 @@
         <% user.followRequests.forEach(request => { %>
         <li>
           <a href="/user/<%= request.username %>"><%= request.username %></a>
-          <button onclick="acceptRequest('<%= request.username %>')">
-            Accept
-          </button>
+          <div class="button-group">
+            <button
+              onclick="handleRequest('<%= request.username %>', 'accept')"
+            >
+              Accept
+            </button>
+            <button
+              class="reject"
+              onclick="handleRequest('<%= request.username %>', 'reject')"
+            >
+              Reject
+            </button>
+          </div>
         </li>
         <% }); %>
       </ul>
       <% if (user.followRequests.length === 0) { %>
       <p>No follow requests.</p>
       <% } %>
-      <a href="/profile">Back to Profile</a>
-      <!-- Link to go back to the profile page -->
+      <a class="back" href="/profile">Back to Profile</a>
     </div>
   </body>
 </html>

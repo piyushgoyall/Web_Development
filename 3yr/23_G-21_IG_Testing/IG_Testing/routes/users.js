@@ -19,7 +19,8 @@ const userSchema = mongoose.Schema({
   likes: [{ type: mongoose.Schema.Types.ObjectId, ref: "post" }],
   followers: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
   following: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
-  // followRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }], // New field for follow requests
+  followRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }], // New field for follow requests
+  requestedFollowing: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }], // New field for tracking follow requests sent
 });
 
 userSchema.plugin(plm);

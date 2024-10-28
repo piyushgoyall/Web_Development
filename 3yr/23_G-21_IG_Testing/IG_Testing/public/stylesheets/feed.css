@@ -40,6 +40,15 @@ body {
   margin-right: 10px; /* Gap between logo and text */
 }
 
+/* User Greeting */
+.user-greeting {
+  margin-left: 0px; /* Pushes greeting text to the far right */
+  color: #ffffff;
+  font-size: 16px;
+  font-family: Arial, sans-serif;
+  margin-top: 5px;
+}
+
 .logo-img {
   height: 25px;
   margin-right: 5px; /* Additional gap between the logo image and the text */

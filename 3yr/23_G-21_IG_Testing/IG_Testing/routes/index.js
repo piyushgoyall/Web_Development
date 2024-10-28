@@ -154,75 +154,156 @@ router.get("/randomUsers", async (req, res) => {
   }
 });
 
-// // Follow/unfollow user
-// router.post("/follow/:userId", async (req, res) => {
-//   const currentUserId = req.user._id;
-//   const targetUserId = req.params.userId;
+// router.post("/followRequest/:id", async (req, res) => {
+//   const { id } = req.params; // FollowRequest ID
+//   const { accepted } = req.body; // true for accept, false for reject
 
 //   try {
-//     const currentUser = await userModel.findById(currentUserId);
-//     const targetUser = await userModel.findById(targetUserId);
+//     const request = await FollowRequest.findById(id).populate(
+//       "sender receiver"
+//     ); // Retrieve the request and populate user info
 
-//     if (currentUser.following.includes(targetUserId)) {
-//       // Unfollow logic
-//       currentUser.following.pull(targetUserId);
-//       targetUser.followers.pull(currentUserId);
-//     } else {
-//       // Follow logic
-//       currentUser.following.push(targetUserId);
-//       targetUser.followers.push(currentUserId);
+//     if (!request) {
+//       return res.json({ success: false, message: "Follow request not found" });
 //     }
 
-//     await currentUser.save();
-//     await targetUser.save();
+//     const sender = request.sender; // User who sent the follow request
+//     const receiver = request.receiver; // User who received the follow request
+
+//     if (accepted) {
+//       // Add sender to receiver's followers and receiver to sender's following
+//       await User.findByIdAndUpdate(receiver._id, {
+//         $addToSet: { followers: sender._id },
+//       });
+//       await User.findByIdAndUpdate(sender._id, {
+//         $addToSet: { following: receiver._id },
+//       });
+//     }
+
+//     // Delete the follow request regardless of acceptance or rejection
+//     await FollowRequest.findByIdAndDelete(id);
+
 //     res.json({ success: true });
-//   } catch (err) {
-//     res.json({ success: false, message: err.message });
-//   }
-// });
-
-// router.get("/followRequests", isLoggedIn, async (req, res) => {
-//   try {
-//     const user = await userModel
-//       .findById(req.user._id)
-//       .populate("followRequests");
-
-//     res.render("followRequests", { user, followRequests: user.followRequests });
 //   } catch (error) {
-//     res.status(500).send("Error fetching follow requests.");
+//     res.json({ success: false, message: error.message });
 //   }
 // });
 
-// router.post("/follow/:userId", isLoggedIn, async (req, res) => {
-//   const currentUser = await userModel.findById(req.user._id);
-//   const targetUser = await userModel.findById(req.params.userId);
+// Follow/unfollow user
+router.post("/follow/:userId", async (req, res) => {
+  const currentUserId = req.user._id;
+  const targetUserId = req.params.userId;
 
-//   if (targetUser.followers.includes(currentUser._id)) {
-//     currentUser.following.pull(targetUser._id);
-//     targetUser.followers.pull(currentUser._id);
-//   } else if (!targetUser.followRequests.includes(currentUser._id)) {
-//     targetUser.followRequests.push(currentUser._id);
-//   }
+  try {
+    const currentUser = await userModel.findById(currentUserId);
+    const targetUser = await userModel.findById(targetUserId);
 
-//   await currentUser.save();
-//   await targetUser.save();
-//   res.json({ success: true });
-// });
+    // Check if a follow request has already been sent
+    if (targetUser.followRequests.includes(currentUserId)) {
+      // If request already exists, cancel the follow request
+      targetUser.followRequests.pull(currentUserId);
+      currentUser.requestedFollowing.pull(targetUserId);
+    } else if (!targetUser.followers.includes(currentUserId)) {
+      // Send a follow request if they aren't already following
+      targetUser.followRequests.push(currentUserId);
+      currentUser.requestedFollowing.push(targetUserId);
+    } else {
+      // If already following, remove the follow
+      currentUser.following.pull(targetUserId);
+      targetUser.followers.pull(currentUserId);
+    }
 
-// router.post("/acceptFollowRequest/:userId", isLoggedIn, async (req, res) => {
-//   const currentUser = await userModel.findById(req.user._id);
-//   const requester = await userModel.findById(req.params.userId);
+    await currentUser.save();
+    await targetUser.save();
+    res.json({ success: true });
+  } catch (err) {
+    res.json({ success: false, message: err.message });
+  }
+});
 
-//   if (currentUser.followRequests.includes(requester._id)) {
-//     currentUser.followers.push(requester._id);
-//     requester.following.push(currentUser._id);
-//     currentUser.followRequests.pull(requester._id);
-//   }
+// Fetch follow requests
+router.get("/followRequests", isLoggedIn, async (req, res) => {
+  try {
+    const user = await userModel
+      .findById(req.user._id)
+      .populate("followRequests");
+    res.render("followRequests", { user, followRequests: user.followRequests });
+  } catch (error) {
+    res.status(500).send("Error fetching follow requests.");
+  }
+});
 
-//   await currentUser.save();
-//   await requester.save();
-//   res.json({ success: true });
-// });
+// Accept follow request
+router.post("/acceptFollowRequest/:userId", isLoggedIn, async (req, res) => {
+  try {
+    const currentUser = await userModel.findById(req.user._id);
+    const requester = await userModel.findById(req.params.userId);
+
+    if (currentUser.followRequests.includes(requester._id)) {
+      // Add requester as a follower to current user
+      if (!currentUser.followers.includes(requester._id)) {
+        currentUser.followers.push(requester._id);
+      }
+
+      // Add current user to requester's following list
+      if (!requester.following.includes(currentUser._id)) {
+        requester.following.push(currentUser._id);
+      }
+
+      // Remove the follow request from both sides
+      currentUser.followRequests.pull(requester._id);
+      requester.requestedFollowing.pull(currentUser._id);
+
+      await currentUser.save();
+      await requester.save();
+
+      res.json({ success: true });
+    }
+
+    // if (currentUser.followRequests.includes(requester._id)) {
+    //   currentUser.followers.push(requester._id);
+    //   requester.following.push(currentUser._id);
+    //   currentUser.followRequests.pull(requester._id);
+    //   requester.requestedFollowing.pull(currentUser._id);
+
+    //   await currentUser.save();
+    //   await requester.save();
+
+    //   res.json({ success: true });
+    // }
+    else {
+      res
+        .status(404)
+        .json({ success: false, message: "Follow request not found." });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
+
+// Reject follow request
+router.post("/rejectFollowRequest/:userId", isLoggedIn, async (req, res) => {
+  try {
+    const currentUser = await userModel.findById(req.user._id);
+    const requester = await userModel.findById(req.params.userId);
+
+    if (currentUser.followRequests.includes(requester._id)) {
+      currentUser.followRequests.pull(requester._id);
+      requester.requestedFollowing.pull(currentUser._id);
+
+      await currentUser.save();
+      await requester.save();
+
+      res.json({ success: true });
+    } else {
+      res
+        .status(404)
+        .json({ success: false, message: "Follow request not found." });
+    }
+  } catch (error) {
+    res.status(500).json({ success: false, message: error.message });
+  }
+});
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -284,8 +365,12 @@ router.get("/logout", function (req, res) {
     if (err) {
       return next(err);
     }
-    res.redirect("/");
+    res.redirect("/signin");
   });
+});
+
+router.get("/notifications", (req, res) => {
+  res.render("notifications");
 });
 
 function isLoggedIn(req, res, next) {
