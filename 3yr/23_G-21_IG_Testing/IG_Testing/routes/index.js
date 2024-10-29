@@ -36,7 +36,11 @@ router.get("/editprofile", isLoggedIn, (req, res) => {
 
 router.get("/profile", isLoggedIn, async (req, res) => {
   const username = req.session.passport.user;
-  const user = await userModel.findOne({ username }).populate("posts");
+  const user = await userModel
+    .findOne({ username })
+    .populate("posts") // Populate posts
+    .populate("followers") // Populate followers
+    .populate("following"); // Populate following
 
   res.render("profile", {
     user: user,
@@ -44,6 +48,8 @@ router.get("/profile", isLoggedIn, async (req, res) => {
     bio: user.bio,
     profileImage: user.profileImage,
     posts: user.posts,
+    followers: user.followers, // Include followers
+    following: user.following, // Include following
   });
 });
 
@@ -234,58 +240,52 @@ router.get("/followRequests", isLoggedIn, async (req, res) => {
 });
 
 // Accept follow request
-router.post("/acceptFollowRequest/:userId", isLoggedIn, async (req, res) => {
+router.post("/acceptFollowRequest/:username", isLoggedIn, async (req, res) => {
   try {
     const currentUser = await userModel.findById(req.user._id);
-    const requester = await userModel.findById(req.params.userId);
+    const requester = await userModel.findOne({
+      username: req.params.username,
+    });
+
+    if (!requester) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
 
     if (currentUser.followRequests.includes(requester._id)) {
-      // Add requester as a follower to current user
       if (!currentUser.followers.includes(requester._id)) {
         currentUser.followers.push(requester._id);
       }
-
-      // Add current user to requester's following list
       if (!requester.following.includes(currentUser._id)) {
         requester.following.push(currentUser._id);
       }
-
-      // Remove the follow request from both sides
       currentUser.followRequests.pull(requester._id);
       requester.requestedFollowing.pull(currentUser._id);
-
-      await currentUser.save();
-      await requester.save();
-
-      res.json({ success: true });
     }
 
-    // if (currentUser.followRequests.includes(requester._id)) {
-    //   currentUser.followers.push(requester._id);
-    //   requester.following.push(currentUser._id);
-    //   currentUser.followRequests.pull(requester._id);
-    //   requester.requestedFollowing.pull(currentUser._id);
-
-    //   await currentUser.save();
-    //   await requester.save();
-
-    //   res.json({ success: true });
-    // }
-    else {
-      res
-        .status(404)
-        .json({ success: false, message: "Follow request not found." });
-    }
-  } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    await currentUser.save();
+    await requester.save();
+    res.json({ success: true });
+  } catch (err) {
+    console.error("Error accepting follow request:", err);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 });
 
 // Reject follow request
-router.post("/rejectFollowRequest/:userId", isLoggedIn, async (req, res) => {
+router.post("/rejectFollowRequest/:username", isLoggedIn, async (req, res) => {
   try {
     const currentUser = await userModel.findById(req.user._id);
-    const requester = await userModel.findById(req.params.userId);
+    const requester = await userModel.findOne({
+      username: req.params.username,
+    });
+
+    if (!requester) {
+      return res
+        .status(404)
+        .json({ success: false, message: "User not found" });
+    }
 
     if (currentUser.followRequests.includes(requester._id)) {
       currentUser.followRequests.pull(requester._id);
@@ -301,7 +301,8 @@ router.post("/rejectFollowRequest/:userId", isLoggedIn, async (req, res) => {
         .json({ success: false, message: "Follow request not found." });
     }
   } catch (error) {
-    res.status(500).json({ success: false, message: error.message });
+    console.error("Error rejecting follow request:", error);
+    res.status(500).json({ success: false, message: "Server error" });
   }
 });
 

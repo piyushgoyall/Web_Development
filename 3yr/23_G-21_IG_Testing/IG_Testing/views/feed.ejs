@@ -108,10 +108,6 @@
     </div>
 
     <script>
-      function closeModal() {
-        document.getElementById("commentModal").style.display = "none";
-      }
-
       document.querySelectorAll(".like-btn").forEach((button) => {
         button.addEventListener("click", async function () {
           const postId = this.dataset.postId;
@@ -156,6 +152,10 @@
         });
       });
 
+      function closeModal() {
+        document.getElementById("commentModal").style.display = "none";
+      }
+
       async function submitComment() {
         const postId = document
           .querySelector(".comment-btn[data-post-id]")
@@ -170,7 +170,7 @@
           const data = await response.json();
           if (data.success) {
             const newComment = document.createElement("p");
-            newComment.textContent = `${data.comment.user.username}: ${data.comment.text}`;
+            newComment.textContent = `${data.user.username}: ${data.comment.text}`;
             document.getElementById("commentList").appendChild(newComment);
             document.getElementById("commentInput").value = "";
           }
