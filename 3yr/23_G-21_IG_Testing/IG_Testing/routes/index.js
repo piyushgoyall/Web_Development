@@ -146,6 +146,23 @@ router.post("/addComment/:postId", isLoggedIn, async (req, res) => {
   });
 });
 
+// Search users by partial username
+router.get("/searchUser", isLoggedIn, async (req, res) => {
+  try {
+    const searchQuery = req.query.username || "";
+    const users = await userModel
+      .find({
+        username: { $regex: `^${searchQuery}`, $options: "i" },
+      })
+      .select("username profileImage"); // Select only required fields
+
+    res.json({ success: true, users });
+  } catch (error) {
+    console.error("Error in searchUser route:", error);
+    res.json({ success: false, message: "Server error" });
+  }
+});
+
 // Route to get 5 random users
 router.get("/randomUsers", async (req, res) => {
   try {
@@ -159,41 +176,6 @@ router.get("/randomUsers", async (req, res) => {
     res.json({ success: false, message: err.message });
   }
 });
-
-// router.post("/followRequest/:id", async (req, res) => {
-//   const { id } = req.params; // FollowRequest ID
-//   const { accepted } = req.body; // true for accept, false for reject
-
-//   try {
-//     const request = await FollowRequest.findById(id).populate(
-//       "sender receiver"
-//     ); // Retrieve the request and populate user info
-
-//     if (!request) {
-//       return res.json({ success: false, message: "Follow request not found" });
-//     }
-
-//     const sender = request.sender; // User who sent the follow request
-//     const receiver = request.receiver; // User who received the follow request
-
-//     if (accepted) {
-//       // Add sender to receiver's followers and receiver to sender's following
-//       await User.findByIdAndUpdate(receiver._id, {
-//         $addToSet: { followers: sender._id },
-//       });
-//       await User.findByIdAndUpdate(sender._id, {
-//         $addToSet: { following: receiver._id },
-//       });
-//     }
-
-//     // Delete the follow request regardless of acceptance or rejection
-//     await FollowRequest.findByIdAndDelete(id);
-
-//     res.json({ success: true });
-//   } catch (error) {
-//     res.json({ success: false, message: error.message });
-//   }
-// });
 
 // Follow/unfollow user
 router.post("/follow/:userId", async (req, res) => {
@@ -306,6 +288,34 @@ router.post("/rejectFollowRequest/:username", isLoggedIn, async (req, res) => {
   }
 });
 
+// // Profile view route
+// router.get("/Profile/:username", isLoggedIn, async (req, res) => {
+//   try {
+//     const currentUserId = req.user._id;
+//     const targetUser = await userModel.findOne({
+//       username: req.params.username,
+//     });
+
+//     if (!targetUser) {
+//       return res.status(404).send("User not found.");
+//     }
+
+//     // Check if the logged-in user follows the target user
+//     const isFollowing = targetUser.followers.includes(currentUserId);
+
+//     if (currentUserId.equals(targetUser._id)) {
+//       // If viewing own profile
+//       res.render("profile", { targetUser });
+//     } else {
+//       // Viewing another user's profile
+//       res.render("viewProfilePage", { targetUser, isFollowing });
+//     }
+//   } catch (error) {
+//     console.error("Error displaying profile:", error);
+//     res.status(500).send("Server error");
+//   }
+// });
+
 /* GET home page. */
 router.get("/", function (req, res, next) {
   // res.render("index", { title: "Express" });
@@ -380,7 +390,5 @@ function isLoggedIn(req, res, next) {
   }
   res.redirect("/login");
 }
-
-// profile
 
 module.exports = router;

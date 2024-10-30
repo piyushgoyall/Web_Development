@@ -99,7 +99,7 @@ body {
 
 /* Feed Container */
 .feed-container {
-  margin-left: 220px; /* Offset for sidebar */
+  margin-left: 0px; /* Offset for sidebar */
   padding: 20px;
   margin-top: 20px; /* Space for header */
   display: flex;
@@ -345,4 +345,217 @@ body {
 
 .random-user button:hover {
   background-color: #007bb5;
+}
+
+/* Sidebar */
+.sidebar {
+  width: 200px;
+  position: fixed;
+  top: 40px;
+  left: 0;
+  height: calc(100% - 40px);
+  background: #ffffff;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 20px;
+  box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.1);
+  transition: width 0.3s, padding 0.3s;
+}
+
+.sidebar.shrink {
+  width: 60px;
+  padding: 20px 5px; /* Adjusted padding */
+}
+
+/* Sidebar Logo */
+.sidebar-logo {
+  display: flex;
+  align-items: center;
+}
+
+.sidebar-logo h1 {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.sidebar.shrink .sidebar-logo h1 {
+  display: none;
+}
+
+/* Sidebar Links */
+.sidebar a {
+  font-size: 1.1rem;
+  color: black;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px;
+  border-radius: 8px;
+  width: 100%;
+  justify-content: flex-start;
+  transition: background-color 0.2s;
+}
+
+.sidebar.shrink a {
+  justify-content: center; /* Center icons */
+  padding: 10px 0; /* Adjusted padding for better centering */
+}
+
+.sidebar.shrink a span {
+  display: none;
+}
+
+/* Hover Effect */
+.sidebar a:hover {
+  background-color: #f0f0f0;
+}
+
+.sidebar.shrink a:hover {
+  background-color: #f0f0f0;
+  padding: 10px; /* Ensures full icon area gets hover background */
+}
+
+.sidebar.shrink .sidebar-logo {
+  justify-content: center;
+  margin-bottom: 20px; /* Ensures space between logo and icons */
+  width: 100%; /* Center-align logo within sidebar */
+}
+
+.sidebar.shrink .sidebar-logo h1 {
+  display: none; /* Hide text in minimized mode */
+}
+
+.sidebar-logo .logo-image {
+  display: none;
+  width: 40px; /* Adjust logo size as needed */
+  height: auto;
+}
+
+.sidebar.shrink .sidebar-logo .logo-image {
+  display: block; /* Show logo in minimized mode */
+  /* margin-bottom: 20px; */
+}
+
+/* Search Sidebar */
+.search-sidebar {
+  width: 300px;
+  position: fixed;
+  top: 40px;
+  left: 60px;
+  height: calc(100% - 40px);
+  background: #f9f9f9;
+  padding: 20px;
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  box-shadow: 2px 0px 5px rgba(0, 0, 0, 0.15);
+  border-left: 1px solid #ddd;
+  transition: all 0.3s;
+}
+
+.search-sidebar input[type="text"] {
+  width: 90%;
+  padding: 12px 15px;
+  font-size: 1rem;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  outline: none;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.search-sidebar input[type="text"]:focus {
+  border-color: #aaa;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+/* Style for search results container */
+.search-sidebar .results {
+  width: 100%;
+  margin-top: 10px;
+  overflow-y: auto;
+  max-height: 70%;
+}
+
+.search-sidebar .results .result-item {
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  cursor: pointer;
+  transition: background-color 0.2s;
+}
+
+.search-sidebar .results .result-item:hover {
+  background-color: #f0f0f0;
+}
+
+.search-sidebar .results .result-item img {
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.search-sidebar .results .result-item .username {
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: #333;
+}
+
+.search-sidebar .results .result-item .name {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+/* Search Result Container */
+#searchResults {
+  margin-top: 10px;
+}
+
+/* Individual Search Result */
+.search-result {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+}
+
+/* Profile Image Styling */
+.search-result img {
+  width: 40px; /* Adjust size as needed */
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 10px;
+}
+
+/* Username Link Styling */
+.search-result a {
+  text-decoration: none;
+  color: #333; /* Adjust color as needed */
+  font-weight: 500;
+}
+
+.user-result {
+  display: flex;
+  align-items: center;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.user-result img {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+.user-result span {
+  font-size: 1rem;
 }

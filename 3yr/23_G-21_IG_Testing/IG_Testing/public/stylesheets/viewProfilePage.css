@@ -1,0 +1,27 @@
+/* Profile Container */
+.profile-container {
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
+  padding: 20px;
+}
+
+/* Private Message Styling */
+.private-message {
+  margin-top: 20px;
+}
+
+.follow-button {
+  background-color: #0095f6;
+  color: white;
+  border: none;
+  padding: 8px 16px;
+  border-radius: 4px;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.follow-button:hover {
+  background-color: #007bbf;
+}

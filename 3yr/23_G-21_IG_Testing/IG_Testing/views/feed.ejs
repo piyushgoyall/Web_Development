@@ -20,22 +20,41 @@
     </header>
 
     <!-- Sidebar Structure -->
-    <div class="sidebar">
-      <div class="sidebar-logo">
+    <div class="sidebar" id="mainSidebar">
+      <div class="sidebar-logo" id="sidebarLogo">
         <h1>Instagram</h1>
+        <img
+          src="/images/instagram_shrink.png"
+          alt="Instagram Logo"
+          class="logo-image"
+        />
       </div>
-      <a href="/feed"><i class="fas fa-home"></i> Home</a>
-      <a href="#"><i class="fas fa-search"></i> Search</a>
-      <a href="#"><i class="fas fa-compass"></i> Explore</a>
-      <a href="#"><i class="fas fa-video"></i> Reels</a>
-      <a href="#"><i class="fas fa-envelope"></i> Messages</a>
-      <a href="/followRequests"><i class="fas fa-heart"></i> Notifications</a>
-      <a href="/upload"><i class="fas fa-plus-square"></i> Create</a>
-      <a href="/profile"><i class="fas fa-user"></i> Profile</a>
-      <!-- <a href="/followRequests"
-        ><i class="fas fa-user-friends"></i> Follow Requests</a> -->
+      <a href="/feed"><i class="fas fa-home"></i> <span>Home</span></a>
+      <a href="#" id="searchButton"
+        ><i class="fas fa-search"></i> <span>Search</span></a
+      >
+      <a href="#"><i class="fas fa-compass"></i> <span>Explore</span></a>
+      <a href="#"><i class="fas fa-video"></i> <span>Reels</span></a>
+      <a href="#"><i class="fas fa-envelope"></i> <span>Messages</span></a>
+      <a href="/followRequests"
+        ><i class="fas fa-heart"></i> <span>Notifications</span></a
+      >
+      <a href="/upload"
+        ><i class="fas fa-plus-square"></i> <span>Create</span></a
+      >
+      <a href="/profile"><i class="fas fa-user"></i> <span>Profile</span></a>
     </div>
 
+    <!-- Search Sidebar -->
+    <div class="search-sidebar" id="searchSidebar">
+      <!-- Search Input -->
+      <input type="text" placeholder="Search username..." id="searchInput" />
+
+      <!-- Search Results -->
+      <div id="searchResults"></div>
+    </div>
+
+    <!-- Feed Container -->
     <main class="feed-container">
       <div class="feed">
         <% posts.reverse().forEach(function(elem) { %>
@@ -108,6 +127,62 @@
     </div>
 
     <script>
+      // Toggle Sidebar and Search Sidebar
+      document
+        .getElementById("searchButton")
+        .addEventListener("click", function () {
+          const mainSidebar = document.getElementById("mainSidebar");
+          const searchSidebar = document.getElementById("searchSidebar");
+
+          // Toggle shrink class for the main sidebar
+          mainSidebar.classList.toggle("shrink");
+
+          // Show or hide the search sidebar based on the main sidebar's state
+          if (mainSidebar.classList.contains("shrink")) {
+            searchSidebar.style.display = "flex";
+          } else {
+            searchSidebar.style.display = "none";
+          }
+        });
+
+      document
+        .getElementById("searchInput")
+        .addEventListener("input", async (event) => {
+          const query = event.target.value.trim();
+
+          if (query.length === 0) {
+            // Clear search results if input is empty
+            document.getElementById("searchResults").innerHTML = "";
+            return;
+          }
+
+          try {
+            const response = await fetch(`/searchUser?username=${query}`);
+            const data = await response.json();
+
+            const searchResults = document.getElementById("searchResults");
+            searchResults.innerHTML = ""; // Clear previous results
+
+            if (data.success && data.users.length > 0) {
+              data.users.forEach((user) => {
+                const userElement = document.createElement("div");
+                userElement.classList.add("search-result");
+
+                userElement.innerHTML = `<img src="/images/profiles/${
+                  user.profileImage || "def_PFP.png"
+                }" alt="${user.username}">
+            <a href="/profile/${user.username}">${user.username}</a>`;
+
+                searchResults.appendChild(userElement);
+              });
+            } else {
+              searchResults.innerHTML = "<div>No user found</div>";
+            }
+          } catch (error) {
+            console.error("Error fetching search results:", error);
+          }
+        });
+
       document.querySelectorAll(".like-btn").forEach((button) => {
         button.addEventListener("click", async function () {
           const postId = this.dataset.postId;
@@ -206,7 +281,7 @@
 
         if (data.success) {
           button.innerText =
-            button.innerText === "Follow" ? "Unfollow" : "Follow";
+            button.innerText === "Follow" ? "Requested" : "Follow";
         }
       }
 
