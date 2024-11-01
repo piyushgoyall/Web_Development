@@ -10,6 +10,10 @@ const uploadProfile = require("./multer2");
 
 passport.use(new localStrategy(userModel.authenticate()));
 
+router.get("/test-image", (req, res) => {
+  res.sendFile(path.join(__dirname, "public/images/uploads/example.jpg"));
+});
+
 router.get("/signup", (req, res) => {
   res.render("signup");
 });
@@ -21,8 +25,8 @@ router.get("/signin", (req, res) => {
 router.get("/feed", isLoggedIn, async (req, res) => {
   const user = await userModel.findOne({ username: req.session.passport.user });
   const posts = await postModel.find().populate("user");
-  console.log(user);
-  console.log(posts);
+  // console.log(user);
+  // console.log(posts);
   res.render("feed", { user, posts });
 });
 
@@ -34,7 +38,7 @@ router.get("/editprofile", isLoggedIn, (req, res) => {
   res.render("editprofile", { user: req.user });
 });
 
-router.get("/profile", isLoggedIn, async (req, res) => {
+router.get("/myProfile", isLoggedIn, async (req, res) => {
   const username = req.session.passport.user;
   const user = await userModel
     .findOne({ username })
@@ -84,7 +88,7 @@ router.post(
     }
 
     await user.save();
-    res.redirect("/profile");
+    res.redirect("/myProfile");
   }
 );
 
@@ -288,33 +292,65 @@ router.post("/rejectFollowRequest/:username", isLoggedIn, async (req, res) => {
   }
 });
 
-// // Profile view route
-// router.get("/Profile/:username", isLoggedIn, async (req, res) => {
-//   try {
-//     const currentUserId = req.user._id;
-//     const targetUser = await userModel.findOne({
-//       username: req.params.username,
-//     });
+router.get("/profile/:username", isLoggedIn, async (req, res) => {
+  try {
+    const currentUserId = req.user._id;
+    const targetUser = await userModel
+      .findOne({ username: req.params.username })
+      .populate({
+        path: "posts",
+        populate: { path: "user", select: "username profileImage" },
+      }); // Populate posts and user within each post
 
-//     if (!targetUser) {
-//       return res.status(404).send("User not found.");
-//     }
+    if (!targetUser) {
+      return res.status(404).send("User not found.");
+    }
 
-//     // Check if the logged-in user follows the target user
-//     const isFollowing = targetUser.followers.includes(currentUserId);
+    const isFollowing = targetUser.followers.includes(currentUserId);
+    const hasRequestedFollow =
+      targetUser.followRequests.includes(currentUserId);
 
-//     if (currentUserId.equals(targetUser._id)) {
-//       // If viewing own profile
-//       res.render("profile", { targetUser });
-//     } else {
-//       // Viewing another user's profile
-//       res.render("viewProfilePage", { targetUser, isFollowing });
-//     }
-//   } catch (error) {
-//     console.error("Error displaying profile:", error);
-//     res.status(500).send("Server error");
-//   }
-// });
+    if (targetUser._id.equals(currentUserId)) {
+      return res.redirect("/myProfile");
+    }
+
+    console.log(targetUser.posts); // Check if posts are populated
+
+    res.render("viewProfilePage", {
+      targetUser,
+      currentUserId,
+      isFollowing,
+      hasRequestedFollow,
+    });
+  } catch (error) {
+    console.error("Error displaying profile:", error);
+    res.status(500).send("Server error");
+  }
+});
+
+router.get("/followers/:userId", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId).populate(
+      "followers",
+      "username"
+    );
+    res.json(user.followers);
+  } catch (error) {
+    res.status(500).json({ error: "Could not fetch followers" });
+  }
+});
+
+router.get("/following/:userId", async (req, res) => {
+  try {
+    const user = await User.findById(req.params.userId).populate(
+      "following",
+      "username"
+    );
+    res.json(user.following);
+  } catch (error) {
+    res.status(500).json({ error: "Could not fetch following" });
+  }
+});
 
 /* GET home page. */
 router.get("/", function (req, res, next) {

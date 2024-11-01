@@ -54,4 +54,9 @@ app.use(function (err, req, res, next) {
   res.render("error");
 });
 
+app.use(
+  "/images/uploads",
+  express.static(path.join(__dirname, "images/uploads"))
+);
+
 module.exports = app;
