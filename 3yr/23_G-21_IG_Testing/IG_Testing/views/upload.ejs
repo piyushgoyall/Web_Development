@@ -3,49 +3,60 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Instagram Post Upload</title>
+    <title>Instagram - Upload Post</title>
     <link rel="stylesheet" href="./stylesheets/upload.css" />
   </head>
   <body>
     <div class="container">
       <header>
         <div class="logo">Instagram</div>
-        <div class="menu">
+        <nav>
           <a href="/feed">Home</a>
-          <!-- <a href="#">Profile</a>
-          <a href="#">Upload Post</a>
-          <a href="#">Messages</a> -->
-        </div>
+          <a href="/myProfile">Profile</a>
+        </nav>
       </header>
 
-      <div class="upload-section">
-        <h2>Upload a New Post</h2>
-        <form action="/upload" method="post" enctype="multipart/form-data">
-          <label for="image">Select Image:</label>
-          <input
-            type="file"
-            id="post-image"
-            name="image"
-            accept="image/*"
-            required
-          />
-
-          <label for="caption">Caption:</label>
-          <textarea
-            id="caption"
-            name="caption"
-            rows="4"
-            placeholder="Write a caption..."
-            required
-          ></textarea>
-
-          <button type="submit">Post</button>
-        </form>
-      </div>
+      <main class="upload-section">
+        <div class="upload-card">
+          <h2>Share Your New Post</h2>
+          <form action="/upload" method="post" enctype="multipart/form-data">
+            <label for="post-image" class="file-label">
+              <input
+                type="file"
+                id="post-image"
+                name="image"
+                accept="image/*"
+                required
+                hidden
+              />
+              <span>Choose an Image</span>
+            </label>
+            <textarea
+              name="caption"
+              rows="4"
+              placeholder="Write a captivating caption..."
+              required
+            ></textarea>
+            <button type="submit">Upload Post</button>
+          </form>
+        </div>
+      </main>
 
       <footer>
-        <p>Instagram Clone - 2024</p>
+        <p>&copy; 2024 Instagram Clone</p>
       </footer>
     </div>
+
+    <!-- JavaScript to update the label with the selected file name -->
+    <script>
+      document
+        .getElementById("post-image")
+        .addEventListener("change", function () {
+          const fileName = this.files[0]
+            ? this.files[0].name
+            : "Choose an Image";
+          document.querySelector(".file-label span").textContent = fileName;
+        });
+    </script>
   </body>
 </html>

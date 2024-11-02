@@ -97,7 +97,6 @@
       .profile-bio {
         font-size: 14px;
       }
-
       /* Post Grid */
       .post-grid {
         display: grid;
@@ -120,6 +119,26 @@
         object-fit: cover;
         display: block;
       }
+      /* Private Message */
+      .private-message {
+        text-align: center;
+        font-size: 16px;
+        color: #8e8e8e;
+        padding: 40px;
+      }
+      .private-message button {
+        margin-top: 10px;
+        background-color: #0095f6;
+        color: white;
+        border: none;
+        padding: 8px 16px;
+        border-radius: 4px;
+        font-size: 14px;
+        cursor: pointer;
+      }
+      .private-message button:hover {
+        background-color: #007bb5;
+      }
     </style>
   </head>
   <body>
@@ -135,6 +154,7 @@
           class="profile-image"
         />
       </div>
+
       <!-- Profile Details -->
       <div class="profile-details">
         <div class="profile-header">
@@ -159,7 +179,7 @@
         </div>
       </div>
 
-      <!-- Post Grid -->
+      <!-- Conditional Post Display -->
       <% if (isFollowing) { %>
       <div class="post-grid">
         <% targetUser.posts.reverse().forEach(post => { %>
@@ -170,6 +190,14 @@
           />
         </div>
         <% }) %>
+      </div>
+      <% } else { %>
+      <div class="private-message">
+        <p>This account is private</p>
+        <p>Follow to see their photos and videos.</p>
+        <button onclick="toggleFollow('<%= targetUser._id %>', this)">
+          Follow
+        </button>
       </div>
       <% } %>
     </div>
@@ -187,6 +215,7 @@
           .then((data) => {
             if (data.success) {
               button.innerText = data.isFollowing ? "Unfollow" : "Follow";
+              location.reload(); // Reload to reflect follow/unfollow change
             }
           })
           .catch((error) => console.error("Error:", error));

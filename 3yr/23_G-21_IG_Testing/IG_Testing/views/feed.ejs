@@ -33,8 +33,8 @@
       <a href="#" id="searchButton"
         ><i class="fas fa-search"></i> <span>Search</span></a
       >
-      <a href="#"><i class="fas fa-compass"></i> <span>Explore</span></a>
-      <a href="#"><i class="fas fa-video"></i> <span>Reels</span></a>
+      <!-- <a href="#"><i class="fas fa-compass"></i> <span>Explore</span></a> -->
+      <!-- <a href="#"><i class="fas fa-video"></i> <span>Reels</span></a> -->
       <a href="#"><i class="fas fa-envelope"></i> <span>Messages</span></a>
       <a href="/followRequests"
         ><i class="fas fa-heart"></i> <span>Notifications</span></a
@@ -261,12 +261,18 @@
           const container = document.getElementById("randomUsersContainer");
           container.innerHTML = "";
           data.users.forEach((user) => {
+            const profileImage = user.profileImage
+              ? user.profileImage
+              : "def_PFP.png";
             const userElem = document.createElement("div");
             userElem.classList.add("random-user");
             userElem.innerHTML = `
-                        <p class="username"><a href="/profile/${user._id}">${user.username}</a></p>
-                        <button onclick="toggleFollow('${user._id}', this)">Follow</button>
-                    `;
+        <div class="user-info">
+          <img src="/images/profiles/${profileImage}" alt="${user.username}'s profile picture" class="user-pfp" />
+          <p class="username"><a href="/profile/${user.username}">${user.username}</a></p>
+        </div>
+        <button onclick="toggleFollow('${user._id}', this)">Follow</button>
+      `;
             container.appendChild(userElem);
           });
         }
