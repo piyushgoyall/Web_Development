@@ -1,3 +1,7 @@
+/* Google Font Imports */
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Pacifico&display=swap");
+
+/* Base Reset */
 * {
   margin: 0;
   padding: 0;
@@ -5,81 +9,140 @@
 }
 
 body {
-  font-family: "Arial", sans-serif;
+  font-family: "Roboto", sans-serif;
   background-color: #fafafa;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
+  background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
+  background-size: cover;
+  background-position: center;
 }
 
+/* Container Styling */
 .container {
   width: 100%;
   max-width: 350px;
   margin: 0 auto;
+  padding: 20px;
 }
 
+/* Signup Box Styling */
 .signup-box {
-  background-color: white;
+  background-color: rgba(255, 255, 255, 0.95);
   border: 1px solid #dbdbdb;
-  padding: 40px 30px;
+  padding: 35px 25px;
   text-align: center;
   border-radius: 10px;
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.signup-box:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 35px rgba(0, 0, 0, 0.2);
 }
 
 .signup-box h1 {
-  font-family: "Grand Hotel", cursive;
-  font-size: 48px;
+  font-family: "Pacifico", cursive;
+  font-size: 42px;
   color: #262626;
-  margin-bottom: 20px;
+  margin-bottom: 15px;
 }
 
 .signup-box h2 {
-  font-size: 17px;
+  font-size: 16px;
   color: #8e8e8e;
   margin-bottom: 20px;
 }
 
-.signup-box form input {
+/* Signup Form Styling */
+.signup-form input {
   width: 100%;
-  padding: 10px;
+  padding: 12px 15px;
   margin: 8px 0;
   border: 1px solid #dbdbdb;
   border-radius: 5px;
   background-color: #fafafa;
   font-size: 14px;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 }
 
-.signup-box form button {
+.signup-form input:focus {
+  border-color: #0095f6;
+  outline: none;
+  box-shadow: 0 0 5px rgba(0, 149, 246, 0.5);
+}
+
+.signup-form button {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   background-color: #0095f6;
   color: white;
   border: none;
   border-radius: 5px;
   font-size: 16px;
+  font-weight: bold;
   cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+  margin-top: 10px;
 }
 
-.signup-box form button:hover {
+.signup-form button:hover {
   background-color: #007cc3;
+  transform: translateY(-2px);
 }
 
+/* Terms and Policies */
 .signup-box p {
   font-size: 12px;
   color: #8e8e8e;
-  margin-top: 15px;
+  margin-top: 12px;
 }
 
-.signup-box a {
+.signup-box p a {
   color: #0095f6;
   text-decoration: none;
+  transition: color 0.3s ease;
 }
 
-.signup-box .login-link {
+.signup-box p a:hover {
+  color: #007cc3;
+}
+
+/* Login Link */
+.login-link {
   margin-top: 20px;
 }
 
-.signup-box .login-link p {
+.login-link p {
   font-size: 14px;
+  color: #262626;
+}
+
+.login-link a {
+  color: #0095f6;
+  text-decoration: none;
+  font-weight: bold;
+  transition: color 0.3s ease;
+}
+
+.login-link a:hover {
+  color: #007cc3;
+}
+
+/* Responsive Design */
+@media (max-width: 400px) {
+  .signup-box {
+    padding: 30px 20px;
+  }
+
+  .signup-box h1 {
+    font-size: 36px;
+  }
+
+  .signup-box h2 {
+    font-size: 15px;
+  }
 }

@@ -1,0 +1,167 @@
+<!-- goodbye.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Goodbye</title>
+    <style>
+      /* Base Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      /* Background and Layout */
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        background: linear-gradient(135deg, #5f72be, #9b23ea);
+        font-family: Arial, sans-serif;
+        color: #333;
+        overflow: hidden;
+      }
+
+      .goodbye-container {
+        text-align: center;
+        background: rgba(255, 255, 255, 0.85);
+        padding: 2.5rem;
+        border-radius: 15px;
+        max-width: 550px;
+        box-shadow: 0 8px 15px rgba(0, 0, 0, 0.1);
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      /* Title Styling */
+      .goodbye-container h1 {
+        font-size: 2.2rem;
+        color: #5f72be;
+        margin-bottom: 1.5rem;
+        line-height: 1.3;
+      }
+
+      /* Button Styling */
+      .goodbye-container a {
+        display: inline-block;
+        margin-top: 1.5rem;
+        padding: 0.8rem 1.5rem;
+        font-size: 1.1rem;
+        font-weight: bold;
+        color: #fff;
+        background-color: #6a4bd8;
+        border: none;
+        border-radius: 25px;
+        text-decoration: none;
+        transition: all 0.3s ease;
+        box-shadow: 0 5px 15px rgba(106, 75, 216, 0.3);
+      }
+
+      .goodbye-container a:hover {
+        background-color: #9b23ea;
+        box-shadow: 0 8px 20px rgba(106, 75, 216, 0.5);
+        transform: translateY(-3px);
+      }
+
+      /* Animation */
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+
+      /* Background Elements */
+      .goodbye-bg {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        z-index: -1;
+        overflow: hidden;
+      }
+
+      /* Decorative Circles */
+      .circle {
+        position: absolute;
+        border-radius: 50%;
+        background-color: rgba(255, 255, 255, 0.3);
+        animation: float 8s ease-in-out infinite;
+      }
+
+      .circle.one {
+        width: 120px;
+        height: 120px;
+        top: 10%;
+        left: 15%;
+      }
+      .circle.two {
+        width: 90px;
+        height: 90px;
+        top: 30%;
+        right: 20%;
+        animation-delay: 1s;
+      }
+      .circle.three {
+        width: 150px;
+        height: 150px;
+        bottom: 25%;
+        left: 10%;
+        animation-delay: 2s;
+      }
+      .circle.four {
+        width: 110px;
+        height: 110px;
+        top: 60%;
+        left: 70%;
+        animation-delay: 3s;
+      }
+      .circle.five {
+        width: 80px;
+        height: 80px;
+        top: 80%;
+        right: 10%;
+        animation-delay: 4s;
+      }
+      .circle.six {
+        width: 130px;
+        height: 130px;
+        bottom: 15%;
+        right: 15%;
+        animation-delay: 5s;
+      }
+
+      /* Floating Animation for Circles */
+      @keyframes float {
+        0%,
+        100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-20px);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="goodbye-bg">
+      <div class="circle one"></div>
+      <div class="circle two"></div>
+      <div class="circle three"></div>
+      <div class="circle four"></div>
+      <div class="circle five"></div>
+      <div class="circle six"></div>
+    </div>
+    <div class="goodbye-container">
+      <h1>Your profile has been deleted. We’re sorry to see you go!</h1>
+      <a href="/">Return to Home</a>
+    </div>
+  </body>
+</html>

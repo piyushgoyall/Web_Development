@@ -1,64 +1,107 @@
+/* Base Reset */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
 }
 
+/* Body Styling with Animated Background */
 body {
   font-family: "Arial", sans-serif;
-  background-color: #fafafa;
+  background: linear-gradient(-45deg, #ff9a9e, #fad0c4, #fad0c4, #ff9a9e);
+  background-size: 300% 300%;
+  animation: gradientBG 15s ease infinite;
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
 }
 
+@keyframes gradientBG {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+/* Sign-In Container */
 .signin-container {
   width: 100%;
   max-width: 350px;
 }
 
+/* Sign-In Box */
 .signin-box {
   background-color: #fff;
   border: 1px solid #dbdbdb;
   padding: 40px;
   margin-bottom: 10px;
   text-align: center;
+  border-radius: 8px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.1);
 }
 
+/* Logo Styling with Gradient Text */
 .signin-box .logo {
-  font-family: "Billabong", cursive;
+  font-family: "Poppins", sans-serif;
   font-size: 50px;
-  color: #262626;
+  background: linear-gradient(
+    45deg,
+    #f09433,
+    #e6683c,
+    #dc2743,
+    #cc2366,
+    #bc1888
+  );
+  background-clip: text; /* Standard property */
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  color: transparent; /* Fallback for non-webkit */
   margin-bottom: 20px;
+  letter-spacing: 1px;
 }
 
+/* Form Styling */
 .signin-form input {
   width: 100%;
-  padding: 10px;
+  padding: 12px;
   margin: 10px 0;
   background: #fafafa;
   border: 1px solid #dbdbdb;
-  border-radius: 3px;
+  border-radius: 5px;
   font-size: 14px;
+  color: #333;
+  transition: border-color 0.3s ease;
+}
+
+.signin-form input:focus {
+  border-color: #0095f6;
+  outline: none;
 }
 
 .signin-form button {
   width: 100%;
   background-color: #0095f6;
   color: #fff;
-  padding: 10px;
+  padding: 12px;
   border: none;
-  border-radius: 3px;
+  border-radius: 5px;
   font-size: 14px;
   font-weight: bold;
   cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
 .signin-form button:hover {
-  background-color: #0084d1;
+  background-color: #007bb1;
 }
 
+/* Divider Styling */
 .or-divider {
   display: flex;
   align-items: center;
@@ -79,39 +122,31 @@ body {
   font-weight: bold;
 }
 
-.social-login {
-  margin-bottom: 20px;
-}
-
-.social-login .facebook-login {
-  color: #385185;
-  text-decoration: none;
-  font-weight: bold;
-}
-
-.social-login .facebook-login:hover {
-  text-decoration: underline;
-}
-
+/* Forgot Password Link */
 .forgot-password {
   color: #00376b;
   text-decoration: none;
-  font-size: 12px;
+  font-size: 16px;
 }
 
 .forgot-password:hover {
   text-decoration: underline;
 }
 
+/* Sign-Up Box */
 .signup-box {
   background-color: #fff;
   border: 1px solid #dbdbdb;
   padding: 20px;
+  border-radius: 5px;
   text-align: center;
+  box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.05);
 }
 
 .signup-box p {
   font-size: 14px;
+  font-family: "Roboto", sans-serif;
+  color: #333;
 }
 
 .signup-box a {
