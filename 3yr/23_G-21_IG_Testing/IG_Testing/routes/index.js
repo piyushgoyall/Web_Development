@@ -7,6 +7,9 @@ const passport = require("passport");
 const localStrategy = require("passport-local");
 const upload = require("./multer");
 const uploadProfile = require("./multer2");
+const mongoose = require("mongoose");
+const crypto = require("crypto");
+const nodemailer = require("nodemailer");
 
 passport.use(new localStrategy(userModel.authenticate()));
 
@@ -23,11 +26,26 @@ router.get("/signin", (req, res) => {
 });
 
 router.get("/feed", isLoggedIn, async (req, res) => {
-  const user = await userModel.findOne({ username: req.session.passport.user });
-  const posts = await postModel.find().populate("user");
-  // console.log(user);
-  // console.log(posts);
-  res.render("feed", { user, posts });
+  try {
+    const user = await userModel
+      .findOne({ username: req.session.passport.user })
+      .populate("following"); // Populate following to get user objects
+
+    const posts = await postModel.find().populate("user");
+
+    // Filter posts to show only those from users the current user follows or their own posts
+    const filteredPosts = posts.filter(
+      (post) =>
+        user.following.some((followedUser) =>
+          followedUser._id.equals(post.user._id)
+        ) || post.user._id.equals(user._id)
+    );
+
+    res.render("feed", { user, posts: filteredPosts });
+  } catch (error) {
+    console.error("Error fetching feed:", error);
+    res.status(500).send("Server error");
+  }
 });
 
 router.get("/upload", isLoggedIn, (req, res) => {
@@ -167,14 +185,23 @@ router.get("/searchUser", isLoggedIn, async (req, res) => {
   }
 });
 
-// Route to get 5 random users
+// Route to get 5 random users excluding logged-in user and already followed users
 router.get("/randomUsers", async (req, res) => {
   try {
     const userId = req.user._id; // Get the logged-in user's ID
+
+    // Find the logged-in user to get their list of followed user IDs
+    const loggedInUser = await userModel.findById(userId).select("following");
+    const followedUserIds = loggedInUser.following.map(
+      (followed) => followed._id
+    );
+
+    // Get 5 random users excluding the logged-in user and already followed users
     const users = await userModel.aggregate([
-      { $match: { _id: { $ne: userId } } },
+      { $match: { _id: { $nin: [userId, ...followedUserIds] } } },
       { $sample: { size: 5 } }, // Retrieve 5 random users
     ]);
+
     res.json({ success: true, users });
   } catch (err) {
     res.json({ success: false, message: err.message });
@@ -416,15 +443,55 @@ router.get("/logout", function (req, res) {
   });
 });
 
-router.get("/notifications", (req, res) => {
-  res.render("notifications");
-});
-
 function isLoggedIn(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
   res.redirect("/login");
 }
+
+// Middleware to ensure the correct user ID is in the session
+router.use(async (req, res, next) => {
+  if (req.isAuthenticated() && req.session.passport.user === "new") {
+    const user = await userModel.findById(req.user._id);
+    if (user) {
+      req.session.passport.user = user._id;
+      req.session.save(); // Save updated session data
+    }
+  }
+  next();
+});
+
+router.get("/goodbye", (req, res) => {
+  // res.send("Your profile has been deleted. Goodbye!");
+  // Alternatively, render a goodbye page:
+  res.render("goodbye");
+});
+
+// Delete route
+router.delete("/myProfile/delete", isLoggedIn, async (req, res) => {
+  try {
+    const userId = req.user._id;
+
+    console.log("Session Data:", req.session);
+    console.log("User ID:", userId);
+
+    if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+      throw new Error("Invalid user ID");
+    }
+
+    await postModel.deleteMany({ user: userId });
+    await Comment.deleteMany({ user: userId });
+    await userModel.findByIdAndDelete(userId);
+
+    req.logout((err) => {
+      if (err) return res.status(500).send("Error logging out.");
+      res.redirect(303, "/goodbye"); // Use 303 status code to ensure it becomes a GET request
+    });
+  } catch (error) {
+    console.error("Error deleting user profile:", error);
+    res.status(500).send("Something went wrong. Please try again later.");
+  }
+});
 
 module.exports = router;
