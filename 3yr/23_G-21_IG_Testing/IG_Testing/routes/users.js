@@ -21,6 +21,10 @@ const userSchema = mongoose.Schema({
   following: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }],
   followRequests: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }], // New field for follow requests
   requestedFollowing: [{ type: mongoose.Schema.Types.ObjectId, ref: "user" }], // New field for tracking follow requests sent
+
+  // New fields for OTP handling
+  otp: String,
+  otpExpires: Date,
 });
 
 userSchema.plugin(plm);
