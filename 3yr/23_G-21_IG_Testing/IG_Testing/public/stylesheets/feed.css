@@ -314,8 +314,8 @@ body {
   position: fixed;
   top: 40px; /* Aligns below header */
   right: 0;
-  width: 250px; /* Width of the sidebar */
-  height: calc(100vh - 60px); /* Full height minus header */
+  width: 270px; /* Increased width of the sidebar */
+  height: calc(100vh - 40px); /* Full height minus header */
   background: #fafafa;
   padding: 20px;
   box-shadow: -2px 0 8px rgba(0, 0, 0, 0.1);
@@ -323,9 +323,9 @@ body {
 }
 
 .random-users-section h3 {
-  font-size: 1.2rem;
+  font-size: 1.3rem; /* Increased font size for better readability */
   font-weight: 600;
-  margin-bottom: 15px;
+  margin-bottom: 18px; /* Increased bottom margin for spacing */
   color: #262626;
 }
 
@@ -333,7 +333,7 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 10px 0;
+  padding: 12px 0; /* Increased padding for more space around user */
   border-bottom: 1px solid #e0e0e0;
 }
 
@@ -347,10 +347,10 @@ body {
 }
 
 .user-pfp {
-  width: 45px;
-  height: 45px;
+  width: 53px; /* Increased size of profile picture */
+  height: 49px; /* Increased size of profile picture */
   border-radius: 50%;
-  margin-right: 10px;
+  margin-right: 12px; /* Increased margin to space out the pfp */
 }
 
 .username a:link,
@@ -364,8 +364,8 @@ body {
 }
 
 .random-user button {
-  padding: 5px 12px;
-  font-size: 0.9rem;
+  padding: 5px 12px; /* Slightly increased button padding */
+  font-size: 0.9rem; /* Slightly larger font size for button */
   color: white;
   background-color: #0095f6;
   border: none;
