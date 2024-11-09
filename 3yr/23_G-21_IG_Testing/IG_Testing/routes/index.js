@@ -208,7 +208,7 @@ router.get("/randomUsers", async (req, res) => {
   }
 });
 
-// Follow/unfollow user
+// Follow - unfollow user
 router.post("/follow/:userId", async (req, res) => {
   const currentUserId = req.user._id;
   const targetUserId = req.params.userId;
@@ -222,19 +222,36 @@ router.post("/follow/:userId", async (req, res) => {
       // If request already exists, cancel the follow request
       targetUser.followRequests.pull(currentUserId);
       currentUser.requestedFollowing.pull(targetUserId);
+      await currentUser.save();
+      await targetUser.save();
+      return res.json({
+        success: true,
+        isFollowing: false,
+        hasRequestedFollow: false,
+      });
     } else if (!targetUser.followers.includes(currentUserId)) {
       // Send a follow request if they aren't already following
       targetUser.followRequests.push(currentUserId);
       currentUser.requestedFollowing.push(targetUserId);
+      await currentUser.save();
+      await targetUser.save();
+      return res.json({
+        success: true,
+        isFollowing: false,
+        hasRequestedFollow: true,
+      });
     } else {
       // If already following, remove the follow
       currentUser.following.pull(targetUserId);
       targetUser.followers.pull(currentUserId);
+      await currentUser.save();
+      await targetUser.save();
+      return res.json({
+        success: true,
+        isFollowing: true,
+        hasRequestedFollow: false,
+      });
     }
-
-    await currentUser.save();
-    await targetUser.save();
-    res.json({ success: true });
   } catch (err) {
     res.json({ success: false, message: err.message });
   }
@@ -491,6 +508,94 @@ router.delete("/myProfile/delete", isLoggedIn, async (req, res) => {
   } catch (error) {
     console.error("Error deleting user profile:", error);
     res.status(500).send("Something went wrong. Please try again later.");
+  }
+});
+
+// Forgot Password
+
+// Route to render forgot password page
+router.get("/forgot-password", (req, res) => {
+  res.render("forgot-password");
+});
+
+// Route to handle forgot password form submission and send OTP
+router.post("/forgot-password", async (req, res) => {
+  const { email } = req.body;
+  try {
+    const user = await userModel.findOne({ email });
+    if (!user) {
+      return res.status(404).send("No user found with that email.");
+    }
+
+    // Generate and store OTP
+    const otp = Math.floor(100000 + Math.random() * 900000).toString();
+    user.otp = otp;
+    user.otpExpires = Date.now() + 10 * 60 * 1000; // OTP valid for 10 minutes
+    await user.save();
+
+    // Send OTP via email
+    const transporter = nodemailer.createTransport({
+      service: "gmail",
+      auth: {
+        user: "piyushgoyal3003@gmail.com",
+        pass: "vlpl zmmt whjx klfy",
+      },
+    });
+
+    const mailOptions = {
+      from: "piyushgoyal3003@gmail.com",
+      to: email,
+      subject: "Your OTP for Password Reset",
+      text: `Your OTP is ${otp}. It will expire in 10 minutes.`,
+    };
+
+    await transporter.sendMail(mailOptions);
+    res.redirect(`/verify-otp?email=${encodeURIComponent(email)}`);
+  } catch (error) {
+    res.status(500).send("Error processing request.");
+  }
+});
+
+// Route to render OTP verification page
+router.get("/verify-otp", (req, res) => {
+  res.render("verify-otp", { email: req.query.email });
+});
+
+// Route to verify OTP
+router.post("/verify-otp", async (req, res) => {
+  const { email, otp } = req.body;
+  try {
+    const user = await userModel.findOne({ email, otp });
+    if (!user || user.otpExpires < Date.now()) {
+      return res.status(400).send("Invalid or expired OTP.");
+    }
+    res.redirect(`/reset-password?email=${encodeURIComponent(email)}`);
+  } catch (error) {
+    res.status(500).send("Error verifying OTP.");
+  }
+});
+
+// Route to render reset password page
+router.get("/reset-password", (req, res) => {
+  res.render("reset-password", { email: req.query.email });
+});
+
+// Route to handle password reset
+router.post("/reset-password", async (req, res) => {
+  const { email, newPassword } = req.body;
+  try {
+    const user = await userModel.findOne({ email });
+    if (!user) return res.status(404).send("User not found.");
+
+    user.setPassword(newPassword, async (err) => {
+      if (err) return res.status(500).send("Error resetting password.");
+      user.otp = undefined;
+      user.otpExpires = undefined;
+      await user.save();
+      res.redirect("/login");
+    });
+  } catch (error) {
+    res.status(500).send("Error resetting password.");
   }
 });
 
