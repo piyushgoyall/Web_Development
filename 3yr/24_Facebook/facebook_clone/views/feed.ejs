@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feed | Facebook Clone</title>
+    <link rel="stylesheet" href="./stylesheets/feed.css" />
+  </head>
+  <body>
+    <!-- Navbar -->
+    <nav class="navbar">
+      <div class="navbar-left">
+        <a href="/"
+          ><img src="/images/fblogo.png" alt="Facebook Logo" class="logo"
+        /></a>
+      </div>
+      <div class="navbar-center">
+        <input type="text" placeholder="Search Facebook" />
+      </div>
+      <div class="navbar-right">
+        <a href="/profile">Profile</a>
+        <a href="/notifications">Notifications</a>
+        <a href="/messages">Messages</a>
+        <a href="/logout">Logout</a>
+      </div>
+    </nav>
+
+    <div class="feed-container">
+      <!-- Sidebar -->
+      <aside class="sidebar">
+        <ul>
+          <li><a href="/profile">Your Profile</a></li>
+          <li><a href="/friends">Friends</a></li>
+          <li><a href="/groups">Groups</a></li>
+          <li><a href="/events">Events</a></li>
+          <li><a href="/settings">Settings</a></li>
+        </ul>
+      </aside>
+
+      <!-- Main Feed Section -->
+      <main class="main-feed">
+        <!-- Create Post -->
+        <div class="create-post">
+          <textarea placeholder="What's on your mind?" rows="3"></textarea>
+          <button>Post</button>
+        </div>
+
+        <!-- Posts -->
+        <div class="post">
+          <div class="post-header">
+            <img src="/images/user1.jpg" alt="User" class="profile-pic" />
+            <div class="post-info">
+              <span class="post-user">John Doe</span>
+              <span class="post-time">2 hours ago</span>
+            </div>
+          </div>
+          <div class="post-content">
+            <p>This is my first post on this Facebook clone!</p>
+            <img src="/images/post1.jpg" alt="Post Image" />
+          </div>
+          <div class="post-actions">
+            <button>Like</button>
+            <button>Comment</button>
+            <button>Share</button>
+          </div>
+        </div>
+        <!-- Repeat Post Block for other posts -->
+      </main>
+
+      <!-- Right Sidebar -->
+      <aside class="right-sidebar">
+        <h3>Sponsored</h3>
+        <div class="sponsored-content">
+          <img src="/images/ad1.jpg" alt="Ad" />
+          <p>Check out this amazing product!</p>
+        </div>
+      </aside>
+    </div>
+  </body>
+</html>

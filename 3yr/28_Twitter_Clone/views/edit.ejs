@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Post | Twitter Clone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="bg-zinc-900 text-white">
+    <!-- Main container -->
+    <div class="w-full min-h-screen p-10">
+      <!-- Logout button -->
+      <div class="w-full flex justify-end mb-5">
+        <a
+          class="bg-red-500 rounded-md px-3 py-2 text-sm inline-block"
+          href="/logout"
+          >Logout</a
+        >
+      </div>
+
+      <!-- Edit Post Header -->
+      <h5 class="mb-5 text-2xl font-semibold">Edit your post</h5>
+
+      <!-- Post Edit Form -->
+      <form action="/update/<%= post._id %>" method="post">
+        <!-- Textarea to edit content -->
+        <textarea
+          placeholder="What's on your mind?"
+          name="content"
+          class="resize-none block w-2/3 p-4 outline-none bg-transparent border-2 border-zinc-800 rounded-md mb-4 text-white"
+          required
+        >
+<%= post.content %></textarea
+        >
+
+        <!-- Submit button -->
+        <input
+          type="submit"
+          value="Update Post"
+          class="px-6 py-2 bg-blue-500 text-white rounded-md cursor-pointer hover:bg-blue-600 transition"
+        />
+      </form>
+    </div>
+  </body>
+</html>
