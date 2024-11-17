@@ -115,7 +115,7 @@ body {
   position: relative;
   overflow: hidden;
   border: 1px solid #ddd;
-  border-radius: 5px;
+  border-radius: 8px;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
 }
 
@@ -182,40 +182,66 @@ body {
   color: #0095f6;
 }
 
-/* Settings Modal Styling */
+/* Modal styling for followers and following */
 .modal {
-  display: none;
+  display: none; /* Hidden by default */
   position: fixed;
   top: 0;
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
   justify-content: center;
   align-items: center;
-  z-index: 1000;
 }
 
 .modal-content {
   background-color: #fff;
-  width: 300px;
-  padding: 20px 0;
-  border-radius: 12px;
-  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  padding: 20px;
+  width: 90%;
+  max-width: 400px;
+  border-radius: 8px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  position: relative;
+}
+
+.modal-content h2 {
+  margin-top: 0;
+  font-size: 1.5em;
+  color: #333;
   text-align: center;
 }
 
-/* Close button styling */
+.modal-content ul {
+  list-style: none;
+  padding: 0;
+  max-height: 300px;
+  overflow-y: auto;
+  text-align: center; /* Center-align text */
+}
+
+.modal-content ul li {
+  margin: 10px 0;
+}
+
+.modal-content ul li a {
+  color: #0077cc;
+  text-decoration: none;
+  font-weight: bold;
+  display: inline-block; /* Ensures the link text centers */
+}
+
+.modal-content ul li a:hover {
+  text-decoration: underline;
+}
+
 .close-btn {
-  font-size: 20px;
-  cursor: pointer;
-  color: #888;
   position: absolute;
   top: 10px;
   right: 15px;
+  font-size: 1.5em;
+  color: #aaa;
+  cursor: pointer;
 }
 
 .close-btn:hover {
@@ -242,6 +268,10 @@ body {
   align-items: center;
   position: relative;
   text-align: center;
+
+  color: #0077cc;
+  text-decoration: none;
+  font-weight: bold;
 }
 
 /* Hover effect for each option */

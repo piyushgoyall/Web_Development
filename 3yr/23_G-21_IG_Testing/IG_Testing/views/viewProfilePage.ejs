@@ -7,6 +7,7 @@
       <%= targetUser.username %> (@<%= targetUser.username %>) • Instagram
       photos and videos
     </title>
+    <script src="/javascripts/theme.js"></script>
     <style>
       /* Main Layout */
       body {
@@ -159,16 +160,21 @@
       <div class="profile-details">
         <div class="profile-header">
           <h2><%= targetUser.username %></h2>
-          <% if (!isFollowing) { %>
-          <button onclick="toggleFollow('<%= targetUser._id %>', this)">
-            Follow
-          </button>
-          <% } else { %>
+          <% if (isFollowing) { %>
           <button onclick="toggleFollow('<%= targetUser._id %>', this)">
             Unfollow
           </button>
+          <% } else if (hasRequestedFollow) { %>
+          <button onclick="toggleFollow('<%= targetUser._id %>', this)">
+            Requested
+          </button>
+          <% } else { %>
+          <button onclick="toggleFollow('<%= targetUser._id %>', this)">
+            Follow
+          </button>
           <% } %>
         </div>
+
         <div class="profile-stats">
           <p><strong><%= targetUser.posts.length %></strong> posts</p>
           <p><strong><%= targetUser.followers.length %></strong> followers</p>
@@ -209,13 +215,22 @@
           headers: {
             "Content-Type": "application/json",
           },
-          body: JSON.stringify({ action: button.innerText.toLowerCase() }),
         })
           .then((response) => response.json())
           .then((data) => {
             if (data.success) {
-              button.innerText = data.isFollowing ? "Unfollow" : "Follow";
-              location.reload(); // Reload to reflect follow/unfollow change
+              if (data.isFollowing) {
+                button.innerText = "Unfollow"; // Change to Unfollow if following
+              } else if (data.hasRequestedFollow) {
+                button.innerText = "Requested"; // Change to Requested if request is sent
+              } else {
+                button.innerText = "Follow"; // Default to Follow if not following or requested
+              }
+
+              // If unfollowed, refresh the page
+              if (!data.isFollowing && !data.hasRequestedFollow) {
+                window.location.reload(); // Refresh the page to reflect changes
+              }
             }
           })
           .catch((error) => console.error("Error:", error));

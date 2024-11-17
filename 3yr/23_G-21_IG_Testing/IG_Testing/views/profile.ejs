@@ -9,6 +9,7 @@
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
     />
+    <script src="/javascripts/theme.js"></script>
   </head>
   <body>
     <div class="container">
@@ -48,6 +49,17 @@
               <a href="javascript:void(0);" onclick="confirmDelete()"
                 >Delete Profile</a
               >
+            </li>
+            <li>
+              <!-- Dark Theme Toggle -->
+              <label class="theme-switch">
+                <input
+                  type="checkbox"
+                  id="darkThemeToggle"
+                  onclick="toggleDarkTheme()"
+                />
+                <span>Dark Theme</span>
+              </label>
             </li>
             <li>
               <a href="javascript:void(0);" onclick="closeSettings()">Close</a>
@@ -109,7 +121,14 @@
           <h2>Followers</h2>
           <ul>
             <% user.followers.forEach(follower => { %>
-            <li><%= follower.username %></li>
+            <li>
+              <a
+                href="/profile/<%= follower.username %>"
+                style="text-decoration: none; color: inherit"
+              >
+                <%= follower.username %>
+              </a>
+            </li>
             <% }) %>
           </ul>
         </div>
@@ -124,7 +143,14 @@
           <h2>Following</h2>
           <ul>
             <% user.following.forEach(following => { %>
-            <li><%= following.username %></li>
+            <li>
+              <a
+                href="/profile/<%= following.username %>"
+                style="text-decoration: none; color: inherit"
+              >
+                <%= following.username %>
+              </a>
+            </li>
             <% }) %>
           </ul>
         </div>
@@ -151,12 +177,6 @@
       function closeFollowing() {
         document.getElementById("followingModal").style.display = "none";
       }
-      window.onclick = function (event) {
-        if (event.target.className === "modal") {
-          closeFollowers();
-          closeFollowing();
-        }
-      };
 
       function confirmDelete() {
         if (
@@ -189,13 +209,33 @@
         document.getElementById("settingsModal").style.display = "none";
       }
 
-      // Close modal if clicked outside the modal content
+      // Combined window onclick event for closing all modals
       window.onclick = function (event) {
-        const modal = document.getElementById("settingsModal");
-        if (event.target === modal) {
+        const followersModal = document.getElementById("followersModal");
+        const followingModal = document.getElementById("followingModal");
+        const settingsModal = document.getElementById("settingsModal");
+        if (event.target === followersModal) {
+          closeFollowers();
+        } else if (event.target === followingModal) {
+          closeFollowing();
+        } else if (event.target === settingsModal) {
           closeSettings();
         }
       };
+
+      // Check stored theme preference on page load
+      document.addEventListener("DOMContentLoaded", () => {
+        if (localStorage.getItem("theme") === "dark") {
+          document.body.classList.add("dark-theme");
+          document.getElementById("theme-toggle").checked = true;
+        }
+      });
+
+      // Function to toggle dark theme and save preference
+      function toggleDarkTheme() {
+        const isDark = document.body.classList.toggle("dark-theme");
+        localStorage.setItem("theme", isDark ? "dark" : "light");
+      }
     </script>
   </body>
 </html>

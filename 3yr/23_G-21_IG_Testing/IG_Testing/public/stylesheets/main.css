@@ -1,0 +1,48 @@
+/* main.css */
+
+/* Dark mode background and text colors */
+body.dark-mode {
+  background-color: #121212;
+  color: #ffffff;
+}
+
+/* General styling for common elements */
+body.dark-mode header,
+body.dark-mode footer,
+body.dark-mode .container {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
+
+body.dark-mode a {
+  color: #bbb; /* Makes links visible in dark mode */
+}
+
+body.dark-mode button,
+body.dark-mode .btn {
+  background-color: #333;
+  color: #ffffff;
+  border: none;
+}
+
+body.dark-mode input,
+body.dark-mode textarea {
+  background-color: #2a2a2a;
+  color: #ffffff;
+  border: 1px solid #444;
+}
+
+body.dark-mode .modal-content {
+  background-color: #333;
+  color: #ffffff;
+}
+
+/* Specific styles for different div classes used in various views */
+body.dark-mode .profile-header,
+body.dark-mode .profile-info,
+body.dark-mode .settings-options,
+body.dark-mode .posts-grid,
+body.dark-mode .feed-footer {
+  background-color: #1e1e1e;
+  color: #ffffff;
+}
