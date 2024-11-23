@@ -5,11 +5,14 @@ const postModel = require("./models/post");
 const cookieParser = require("cookie-parser");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const path = require("path");
+const multer = require("multer");
+const upload = require("./config/multerconfig");
 
 app.set("view engine", "ejs");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
-// app.use(express.static(path.join(__dirname, "public")));
+app.use(express.static(path.join(__dirname, "public")));
 app.use(cookieParser());
 
 app.get("/", (req, res) => {
@@ -88,6 +91,15 @@ app.post("/signin", async (req, res) => {
   });
 });
 
+// Route to display the feed page with tweets from the current user and other users
+app.get("/feed", isLoggedIn, async (req, res) => {
+  // Fetch all posts (tweets) from the database, including the user who posted them
+  let posts = await postModel.find().populate("user"); // Populate user data with each post
+
+  res.render("feed", { posts, user: req.user }); // Pass posts and current user to the view
+});
+
+// Create new post
 app.post("/post", isLoggedIn, async (req, res) => {
   try {
     let user = await userModel.findOne({ email: req.user.email }); // Retrieve the current user
@@ -138,32 +150,87 @@ app.get("/like/:id", isLoggedIn, async (req, res) => {
 
 // Route for rendering the edit post page
 app.get("/edit/:id", isLoggedIn, async (req, res) => {
-  try {
-    let post = await postModel.findOne({ _id: req.params.id }).populate("user");
-    res.render("edit", { post });
-  } catch (err) {
-    console.error(err);
-    res.status(500).send("Error fetching post for editing.");
-  }
+  let post = await postModel.findOne({ _id: req.params.id }).populate("user");
+  res.render("editPost", { post });
 });
 
 // Route for updating the post content
 app.post("/update/:id", isLoggedIn, async (req, res) => {
-  try {
-    let post = await postModel
-      .findOneAndUpdate(
-        { _id: req.params.id },
-        { content: req.body.content },
-        { new: true } // Return updated post
-      )
-      .populate("user");
+  let post = await postModel
+    .findOneAndUpdate(
+      { _id: req.params.id },
+      {
+        content: req.body.content,
+        edited: true,
+        lastEdited: new Date(),
+      },
+      { new: true } // Return updated post
+    )
+    .populate("user");
 
-    res.redirect("/profile"); // Redirect to profile after updating
+  res.redirect("/profile"); // Redirect to profile after updating
+});
+
+// Route for deleting a post
+app.post("/delete/:id", isLoggedIn, async (req, res) => {
+  try {
+    // Find and delete the post by ID
+    await postModel.findByIdAndDelete(req.params.id);
+
+    // Optionally, remove the post ID from the user's posts array
+    let user = await userModel.findOne({ email: req.user.email });
+    user.posts = user.posts.filter(
+      (postId) => postId.toString() !== req.params.id
+    );
+    await user.save();
+
+    // Redirect to profile after deletion
+    res.redirect("/profile");
   } catch (err) {
     console.error(err);
-    res.status(500).send("Error updating the post.");
+    res.status(500).send("Error deleting the post.");
   }
 });
+
+// Edit Profile
+app.get("/profile/editProfile", isLoggedIn, async (req, res) => {
+  // Fetch the user from the database using the logged-in user's email
+  const user = await userModel.findOne({ email: req.user.email });
+
+  // Render the 'editProfile' template and pass the user data
+  res.render("editProfile", { user });
+});
+
+app.post(
+  "/upload",
+  isLoggedIn,
+  upload.single("profilePic"), // Multer middleware to handle file upload
+  async (req, res) => {
+    const user = await userModel.findOne({ email: req.user.email });
+
+    // Check if the user exists
+    if (!user) {
+      return res.status(404).send("User not found.");
+    }
+
+    // Update fields only if provided in the form
+    if (req.body.name) user.name = req.body.name;
+    if (req.body.username) user.username = req.body.username;
+    if (req.body.bio) user.bio = req.body.bio;
+
+    // If a new file is uploaded, update the profile picture field
+    if (req.file) {
+      user.profilePic = req.file.filename;
+    }
+
+    // Save the updated user data to the database
+    await user.save();
+
+    // console.log(user.profilePic);
+    // Redirect to the profile page after successful update
+    res.redirect("/profile");
+  }
+);
 
 // Middleware to check if the user is logged in
 function isLoggedIn(req, res, next) {

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Post | Twitter Clone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body
+    class="bg-gradient-to-r from-gray-900 to-gray-800 text-white min-h-screen flex items-center justify-center"
+  >
+    <!-- Main container -->
+    <div class="w-full max-w-lg p-8 bg-gray-900 shadow-lg rounded-xl">
+      <!-- Header -->
+      <h1 class="text-3xl font-bold text-blue-400 mb-6 text-center">
+        Edit Post
+      </h1>
+
+      <!-- Post Edit Form -->
+      <form action="/update/<%= post._id %>" method="post" class="space-y-6">
+        <!-- Textarea to edit content -->
+        <textarea
+          placeholder="What's on your mind?"
+          name="content"
+          class="resize-none w-full p-4 bg-gray-800 rounded-lg border border-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none text-white"
+          required
+        >
+<%= post.content %></textarea
+        >
+
+        <div class="flex justify-between items-center">
+          <!-- Submit button -->
+          <input
+            type="submit"
+            value="Update Post"
+            class="px-6 py-2 bg-blue-500 text-white rounded-lg cursor-pointer hover:bg-blue-600 transition"
+          />
+
+          <!-- Delete Post Form -->
+          <form
+            action="/delete/<%= post._id %>"
+            method="post"
+            onsubmit="return confirm('Are you sure you want to delete this post?')"
+          >
+            <button
+              type="submit"
+              class="px-6 py-2 bg-red-500 text-white rounded-lg cursor-pointer hover:bg-red-600 transition"
+            >
+              Delete Post
+            </button>
+          </form>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

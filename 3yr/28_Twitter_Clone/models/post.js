@@ -21,6 +21,8 @@ const postSchema = new mongoose.Schema({
       ref: "user", // References users who liked the post
     },
   ],
+  edited: { type: Boolean, default: false },
+  lastEdited: Date,
 });
 
 module.exports = mongoose.model("post", postSchema);

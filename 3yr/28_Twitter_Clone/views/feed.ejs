@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Feed | Twitter Clone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+
+  <body class="bg-gray-900 text-white flex">
+    <!-- Sidebar -->
+    <div class="w-64 h-screen bg-gray-800 p-6">
+      <div class="flex flex-col space-y-8">
+        <div class="text-xl font-semibold text-blue-400">
+          <a href="/feed" class="hover:text-blue-300">Home</a>
+        </div>
+        <div class="text-xl font-semibold text-blue-400">
+          <a href="/explore" class="hover:text-blue-300">Explore</a>
+        </div>
+        <div class="text-xl font-semibold text-blue-400">
+          <a href="/profile" class="hover:text-blue-300">Profile</a>
+        </div>
+        <div class="text-xl font-semibold text-blue-400">
+          <a href="/notifications" class="hover:text-blue-300">Notifications</a>
+        </div>
+        <div class="text-xl font-semibold text-blue-400">
+          <a href="/messages" class="hover:text-blue-300">Messages</a>
+        </div>
+        <div class="text-xl font-semibold text-blue-400">
+          <a href="/bookmarks" class="hover:text-blue-300">Bookmarks</a>
+        </div>
+      </div>
+    </div>
+
+    <!-- Feed Section -->
+    <div class="w-full max-w-4xl mx-auto p-6">
+      <!-- Feed Header -->
+      <h5 class="mb-5 text-3xl font-semibold text-center text-blue-400">
+        Latest Tweets
+      </h5>
+
+      <!-- Posts Section -->
+      <div class="w-full">
+        <% posts.reverse().forEach(function(post) { %>
+        <div class="mb-6 p-6 bg-gray-800 rounded-xl shadow-md">
+          <div class="flex items-center space-x-4 mb-2">
+            <!-- User Image (Profile Picture) -->
+            <img
+              src="/images/uploads/<%= post.user.profilePic %>"
+              alt="Profile Picture"
+              class="w-10 h-10 rounded-full"
+              onerror="this.onerror=null;this.src='/images/uploads/defpfp.png';"
+            />
+
+            <!-- Post Content -->
+            <div class="flex-1">
+              <div class="flex items-center justify-between">
+                <h4 class="text-lg font-semibold text-blue-400">
+                  <%= user.username %>
+                </h4>
+                <span class="text-sm text-gray-500">
+                  <%= new Date(post.date).toLocaleDateString() %> <% if
+                  (post.edited) { %> (Edited) <% } %>
+                </span>
+              </div>
+              <p class="text-gray-300 mb-4"><%= post.content %></p>
+
+              <!-- Interaction Links (Like) -->
+              <div class="flex space-x-4 text-blue-500">
+                <a
+                  href="/like/<%= post._id %>"
+                  class="font-semibold hover:underline"
+                >
+                  <%= post.likes.indexOf(user._id) === -1 ? "Like" : "Unlike" %>
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+      </div>
+    </div>
+  </body>
+</html>

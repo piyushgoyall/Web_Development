@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Edit Profile | Twitter Clone</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
+  <body
+    class="bg-gradient-to-br from-gray-900 to-gray-800 text-white min-h-screen flex items-center justify-center"
+  >
+    <div class="w-full max-w-3xl bg-gray-900 rounded-lg shadow-lg p-8">
+      <h1 class="text-4xl font-bold text-blue-400 text-center mb-6">
+        Edit Profile
+      </h1>
+      <form
+        autocomplete="off"
+        action="/upload"
+        method="post"
+        enctype="multipart/form-data"
+        class="space-y-6"
+      >
+        <!-- Profile Picture Upload -->
+        <div class="flex items-center justify-center flex-col">
+          <label
+            for="profilePic"
+            class="text-gray-300 font-semibold text-lg mb-2"
+            >Profile Picture</label
+          >
+          <input
+            type="file"
+            name="profilePic"
+            id="profilePic"
+            class="block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-500 file:text-white hover:file:bg-blue-600"
+          />
+        </div>
+
+        <!-- Name -->
+        <div>
+          <label for="name" class="text-gray-300 font-semibold text-lg"
+            >Name</label
+          >
+          <input
+            type="text"
+            name="name"
+            id="name"
+            value="<%= user.name %>"
+            class="w-full mt-2 p-3 rounded-md bg-gray-800 text-white border border-gray-700 focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter your name"
+            required
+          />
+        </div>
+
+        <!-- Username -->
+        <div>
+          <label for="username" class="text-gray-300 font-semibold text-lg"
+            >Username</label
+          >
+          <input
+            type="text"
+            name="username"
+            id="username"
+            value="<%= user.username %>"
+            class="w-full mt-2 p-3 rounded-md bg-gray-800 text-white border border-gray-700 focus:ring-2 focus:ring-blue-500"
+            placeholder="Enter your username"
+            required
+          />
+        </div>
+
+        <!-- Bio -->
+        <div>
+          <label for="bio" class="text-gray-300 font-semibold text-lg"
+            >Bio</label
+          >
+          <textarea
+            name="bio"
+            id="bio"
+            rows="4"
+            class="w-full mt-2 p-3 rounded-md bg-gray-800 text-white border border-gray-700 focus:ring-2 focus:ring-blue-500"
+            placeholder="Write something about yourself..."
+          >
+<%= user.bio || "" %></textarea
+          >
+        </div>
+
+        <!-- Submit Button -->
+        <div class="flex justify-center">
+          <button
+            type="submit"
+            class="px-6 py-3 bg-blue-500 rounded-md text-white font-semibold hover:bg-blue-600 transition duration-200"
+          >
+            Save Changes
+          </button>
+        </div>
+      </form>
+    </div>
+  </body>
+</html>

@@ -8,12 +8,15 @@ mongoose
   .catch(() => console.log("Database connection establishment failed"));
 
 const userSchema = new mongoose.Schema({
+  profilePic: {
+    type: String,
+    default: "defpfp.png",
+  },
   username: { type: String, unique: true, required: true },
   name: { type: String, required: true },
   email: String,
   password: String, // This will store the hashed password
   bio: String,
-  tweets: [String],
   createdAt: { type: Date, default: Date.now },
   posts: [
     {
